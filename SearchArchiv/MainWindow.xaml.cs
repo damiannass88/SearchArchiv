@@ -24,5 +24,26 @@ namespace SearchArchiv
         {
             InitializeComponent();
         }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MainWindow_Name.Cursor = System.Windows.Input.Cursors.Hand;
+
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                this.DragMove();
+
+            }
+
+            if (e.ButtonState == MouseButtonState.Released)
+            {
+                MainWindow_Name.Cursor = System.Windows.Input.Cursors.Arrow;
+            }
+        }
+
+        private void Adwers_footer_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // go adwers.com
+        }
     }
 }

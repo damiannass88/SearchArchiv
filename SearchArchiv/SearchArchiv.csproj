@@ -94,5 +94,17 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Settings\logo-saxas.png" />
+    <Resource Include="Settings\Logo_Company.png" />
+    <Resource Include="Settings\saxas1.jpg" />
+    <Resource Include="Settings\Saxas_transparent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Saxas_transparent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="settings.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

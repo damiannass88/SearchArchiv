@@ -361,3 +361,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/SearchArchiv/Settings/logo-saxas.png
+/SearchArchiv/Settings
+/SearchArchiv/TEMPLATES
+/SearchArchiv/Saxas_transparent.png
+/SearchArchiv/settings.png
