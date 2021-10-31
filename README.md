@@ -6,3 +6,7 @@ podanie wcześniejszych wersji części, tryb miniatury.
 SearchArchiv Application for an industrial Company in German. The application's task is to search the component file structure of production parts 
 by entering a unique ID and display the current PDF version and printing by one click.
 Additional features: quick preview, serving previous versions of parts, miniature mode.
+
+///
+Aplikacja została zrobiona w c# wpf xaml .net 4.52, ze względu na prostotę i ograniczenia zaistalowanych bibliotek na komputerach docelowych,
+oraz oszczędności miejsca w możliwości użycia self-contained dla .NET5.
