@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
-namespace SearchArchiv
+namespace SearchArchiv.Classes
 {
     class ImagesClass
     {
@@ -13,6 +15,7 @@ namespace SearchArchiv
         /// </summary>
         public static string SaxasImageBase64
         {
+            // return image in form base64: "data:image/png;base64,"
             get
             {
                 return "iVBORw0KGgoAAAANSUhEUgAAAEsAAAAhCAMAAACm/6bkAAAC91BMVEUAAAD39/f///+dnaMnI00iHUv+/v7////FxcbV1dU0MVRSUWVrannV1" +
@@ -37,8 +40,10 @@ namespace SearchArchiv
                     "BD3tASwqEfTsVxI0OqQ02pyCo/6S1JA36PFap8er0eeZNHbGAtjhpVbuSi4RDA5QEZVlUKvMO9lCMjQFQH6lkNZgzOobCnvOeE9nbZ6N3913e9X4a9sNuuwbBXN+bbKMcSqAg2e8jQ/XTrFMw5oAYLj" +
                     "l97Fr56ZwoMWPAGI2//JgxjM9kTRh3PVVN1fXFuDvor+74/uu3WBL3Duq3dA732/76qWXJgKY+XLbIYNuntzuqgMfFwBQT82L7hGNc/4vfgNa0OLHCw/VvwAAAABJRU5ErkJggg==";
             }
-        } public static string SettingsImageBase64
+        } 
+        public static string SettingsImageBase64
         {
+            // return image in form base64: "data:image/png;base64,"
             get
             {
                 return "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAnFBMVEUAAABVVVVSUlVUVFW3t7dVVVVTU1WWlpaurq4eGEqJiYlkY2QeGUp8fHwgGkpRUVZqampQT1UhG0siHUsgGkoeGEojH" +
@@ -55,6 +60,46 @@ namespace SearchArchiv
                     "Ki0wTOYlITTs4PBFgrTrNbGjfQ43wCRbSZf4nwIPuri4NBt/BQybrTTA0OWrQooyovgETsCMvJa2V4/GVurJQQ/qYVJZNBC3A8oyvfYAguGoNB5MjvS157nmFC016hGF1CJYDIq1b1TfSXyQYFUu3tC" +
                     "+l86k+wuD+H1hP4ORfgAAAABJRU5ErkJggg==";
             }
+        } 
+        public static string SearchArchivLogoBase64
+        {
+            // return image in form base64: "data:image/png;base64,"
+            get
+            {
+                return "iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAMAAABiM0N1AAABj1BMVEUAAAAeGEoeGEoeGEoeGEoeGEoeGEoeGEoeGEoeGEoeGEoeGEoeGEoeGEoeGEoeGEoeGEoeGEoeGEoeGEoeGEoeG" +
+                    "EoeGEoeGEoeGEoeGEoeGEoeGEr//PweGEr///8fGUr//v4AADYhG0v+/PwAAEAcFkkOA0QbFEnS0NMAAELm5eYZEkgUDEcAADwAAAAXD0gAADD6+fkOA0YEAEP8+vv39vbf3+DDwcW1tLns6eteX" +
+                    "G/V09axr7Slo6p1c4EAADgAACn7+vrw7e6zsbatq7GdmqM1NE8oJ0r5+Pj09PTHxck6OlDq6Onh3+HMyc3Ix8txb31ST2dFRFXo5uiJh5GEgow8OFcjHUwAADPx8PDd2919e4ZpZ3dbWGwAABHb2d" +
+                    "zZ19qop6yhnqWZl6CRjpZ6eIRJRmBDQlxKSFcqJU/t6+29ur+5t723trqWlZ2NjJRtbHtBPlouKlExLk319fXQzdBjYXJNS2E4NFU5OFQLAUMAAALj4uQSC0RhYmJaWWFDQ1UZFkUhHkAAAB5kY3C" +
+                    "JeWt4AAAAHHRSTlMACwb49cGfjHgfA/7t5dG9tbClioBzVkE7JiTMtQ24yQAABnVJREFUWMO9mGd70lAUx7WUtmrVqlVrzbk3CSEhQNijyJ5d0EL33nsP914f3BgKaZMbivo8/l/C5RfOujnn3LhGt1" +
+                    "tuKmq5feMf9OzJ4/a2B/fN5vsP2tofP3n2d5Rb7Xc7TXcAXwjumDrvtt/6Q8jt3o57ACA433PO/sLwcKHfyb13WgHgXkfvHxj5tM2EsZ/hdhNrh6O2uVBo2Tbaly87OMaHwdT2tFmbulqB9X2oxKOzA" +
+                    "xaKphTRlGUgY8tvL7kxtHY1Y2FLN4DgLpysUIimNKKRxfb63CkAdLdcx+kxA05NrS0jRBGF6Oi6dQaDuacxp6MVMHMcCVANlLbPS7J9HY3MegTg28pe/BmL15u2EFF0/NQH8MjYvIfAJiftvzkI2cOx" +
+                    "fD4fC9tJRqJQQmLhoRHnObCedYty0J74yoLD4QD2a2Kc5C7vJMPCc7JdD8HKVc0ayKV4h9g/NjbWLzp4JpYmeT3OATwkWfcIWO5QifheecaXXMxGx4tFW24x6Z/ZzFAErXIsPCLES7arT+EMlHl3YSg" +
+                    "o+9RCIxQMDzv5zTSJFJet08WupxWSecUutOFxLyp+iZy+XbB5UaninplAJOsmJWjt0TjIDL6Jqp+HXM6piPK74o7V5ZpfRqUtyTNC9HjCB+arbuoGvGVXvpx9ISyVqsURmC2+Ope2bWjO7f5JzNHQKY" +
+                    "buK3UKwBxUn2k749fUNESDm9zCoHfD2W+jiKGTMFyu4C6cOqpyLDn+LHr5aLB8nqGGpsVVYpLT8zPQpXKetjq2I7VE4xf3rpwNDlqovR1nYoAiyW4VWp/W78M2cMcvfPCywpe9+vNfrG8HyRW87oS22" +
+                    "p3Za2ILJaqqwbe+TYIvPoNABlHRc2zqreUiFudRDXRuAMIGIPq1u56V98Blr4GCC/xJUHc68EXYekkGIdsSvleLvbhA13PsmH8zrjv98fTTpJciy7Ltu8iAdmBiat5m+d0R3eF9lsvSBiCUZ6BdAd0F" +
+                    "MaSeWpniJ7QPD867C3OUgWgbB3eV93KnMHXJkd4FwbOPrj7zgBHnKUNlHNbO32/zJyb+OH3pVysu8NvQZc4oIyRDyBA0UHaansigx3f8ucvpj7Ie/O2V+klg1Dqd6jPmUJb8+zuP5bRux/4wfSXW+aQ" +
+                    "g5T9SSBZNhY4YkOJUI/Vx0H77Rksb1lZ2IL6ExeFEbOjVUK5c8AuuVW8jDj3qxG0tN24+wMMhbURfvcVOn8QwjOTEsB1FVEPZ+vGDmzdu3sdjugxEs/uTlRmXyzMNeKyovOjSmaARb7mA78sgM96JkG" +
+                    "KRsc9F1xjMvptTCuHkxcmhASk0jM0qiCSUWTo7OwsrF7lgdfzYzBiDFNOKlJFGZH20UKXv0wDAMlOjpD81p5imOlvfDdVE5xygSPi0igycrYQ/SuIEbX01xRYvQDDt2XhJDr+akBp5JySmLh/UxEplX" +
+                    "VNxqCSkXCJcjHSru4As/7v9ASXna7KsySVSLdqNtD5gc0YgYJO7k/tRu72eKIlq0T7rdLwJUjrNfheMSNgtpZZcY/WTu0Lns4uLrUTrazrmx9BIL2q+jioXm3LVJg8QIbUXhEYcaw2E4rWr9hZwCULY" +
+                    "Vk6hKRBV8cOt+usooieFp5sCoZUP+F79BckRGqmRXdwU6MSHO9RX9ju7/k5flNgmQMsF1tSrNhGOXECXSZGydD0osOaWmwi1rXFXMvqcXE1dD4pMVdsatdGKIx3oNXctCB2noEvT+g0hLWjdcx0IZRk" +
+                    "MtzTNaGWP0qjo/EQOnIP3s7uvf1f2FoZubXvMH1l0OZnw6wvNyn2Y2oiFR6NyGU0q7bG2YZ/JaY2jiy5Wg2ElMbEc9F7YnpQbdv0IMZ3SX3CL4hW/8N/erI7X5i4662GhgzjU8EMaEj3iceOqQExK4s" +
+                    "TQy/qNRh8qQw15zOLDGusCYXHJI+uH68OL9dHZtPog1MdZlTGLPPilchqPo+BILJvNhkvBAI2utCCyXc+NR9HpmaM9pEFVdfUz+0RSHUXJwzFfUTPTSOhgSzMck8f1eKbhuB6IHDGacZ28QIBUJWdH" +
+                    "NJmCUCm+nQIw9zSx0sBux7uJCK1nyR/Z5wtuB4bulmaXLJwrcVAKpim6DrGkB0OxBZfIEpcsxmsf4JLiG7mmoqFiJDIesoVzx1MiIwJW1z7NL6IcPOfvHx7b2Rkb7vf7eUG/iGp+NYbrUldj/2VZ" +
+                    "9+/rw18eMzNaW+qChwAAAABJRU5ErkJggg==";
+            }
+        }
+        public static BitmapImage MemoringStreamBitmap(byte[] base64String)
+        {
+            // Return BitmapImage, after Memoring StreamSourcer
+            BitmapImage bitmapImage = new BitmapImage();
+            using (MemoryStream ms = new MemoryStream(base64String))
+            {
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = ms;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+            };
+            return bitmapImage;
         }
 
     }
