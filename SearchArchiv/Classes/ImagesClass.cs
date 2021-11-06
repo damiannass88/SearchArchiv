@@ -88,6 +88,17 @@ namespace SearchArchiv.Classes
                     "9+/rw18eMzNaW+qChwAAAABJRU5ErkJggg==";
             }
         }
+        public static string AdwersLogoBase64
+        {
+            // return image in form base64: "data:image/png;base64,"
+            get
+            {
+                return "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAAAAAByaaZbAAABZElEQVQYGe3BL2/qUADG4feb7Btcg8GiMDN8gPoJDGJyggQ1M1WDqZmdQJOQ1FRhUDUVFZiaCpImTXOS373bOeVPaWn97vPo" +
+                    "P2da1LYaZEct0iA4ptxpCB9nrGEOOBqowFlrkHdqsQbJqFUawsM5GgINsMF5PVFqgBTrpABW6jXC+ZQMkXqFWNVM2lOol8HKniQffPVY4XxJGkOuHiGOvsWYhR4rsQ765sFGD33gvOlHRq6HMqxi" +
+                    "qh8hLPWAV2HFst4g1QM+zlxOQeWpW4qVa2w9fUGgTlMcU9YqyNQpotVcHf7kWIUuNhCrw4vB2uhiAsVU7XY4upbASu0MVqxrS0jVyscJdG1SwExtEpyZbiSwV4tJgZXqlg/5SPfecRZqMDDXvSPW" +
+                    "SU0hxLozx9mraQG8qCnBidTkGTg+64q3O5TUzH63DXS23YY5/5g0+lBtRUOi2oiLSLXndXBrqbN1cPaq3+ovpGD63MyEYUwAAAAASUVORK5CYII=";
+            }
+        }
         public static BitmapImage MemoringStreamBitmap(byte[] base64String)
         {
             // Return BitmapImage, after Memoring StreamSourcer
