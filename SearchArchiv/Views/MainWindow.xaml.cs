@@ -77,8 +77,11 @@ namespace SearchArchiv.Views
         }
 
         private void Search_ID_Click(object sender, RoutedEventArgs e)
-        {
+        { 
             // Start searching ID number.
+            SearchingClass searchingClass = new SearchingClass();
+            searchingClass.StartSearch(ID_Input.Text.Trim().ToString());
+           
         }
  
         private void Settings_Btn_Click(object sender, RoutedEventArgs e)
@@ -88,8 +91,17 @@ namespace SearchArchiv.Views
 
             if (settings_Window.ShowDialog() == true)
             {
-                System.Windows.Forms.MessageBox.Show("Settings werden gespeichert. \n -Datei: SearchArchiv.exe.config. \n\n " +
-                    "Bitte starten Sie, Anwendungen neu.", "INFORMATION", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+        }
+
+        private void Info_btn_Click(object sender, RoutedEventArgs e)
+        {
+            // Create Object Info_Window and Open that window with about infos.
+            Info_Window info_Window = new Info_Window();
+
+            if (info_Window.ShowDialog() == true)
+            {
                 return;
             }
         }
