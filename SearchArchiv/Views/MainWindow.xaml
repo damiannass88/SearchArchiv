@@ -9,7 +9,7 @@
         WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
         WindowStyle="None" 
-        Title="SuchArchiv" Height="450" Width="400" MouseDown="Window_MouseDown" Icon="SearchArchiv.ico">
+        Title="SearchArchiv" Height="450" Width="400" MouseDown="Window_MouseDown" Icon="SearchArchiv.ico">
     <Window.Background>
         <SolidColorBrush Color="Transparent"/>
 
@@ -48,7 +48,7 @@
             </Grid.Resources>
 
             <TextBlock x:Name="AppTitle" 
-                       Text="SuchArchiv"
+                       Text="SearchArchiv"
                        Grid.Column="1"
                        Grid.Row="1"
                        Margin="5,0,0,0"
@@ -179,7 +179,7 @@
                         Margin="0,10,0,0"
                         HorizontalAlignment="Left"
                         Orientation="Horizontal">
-                <TextBlock Text="Vorherige Revisionen : "
+                <TextBlock Text="Vorherige Versionen : "
                            Padding="5,2,0,0"
                            FontSize="15" TextAlignment="Center"
                            Background="#CC0E0E0E" Foreground="#FFF1F1F1">
@@ -241,8 +241,47 @@
                            Cursor="Hand"
                            ToolTip="Go Adwers.com"
                            MouseLeftButtonDown="Adwers_footer_MouseLeftButtonDown" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button x:Name="Info_btn" BorderThickness="0"
+                            VerticalAlignment="Bottom"
+                            Background="Transparent"
+                            Cursor="Hand" Click="Info_btn_Click">
+                    <Button.Content>
+                        <StackPanel VerticalAlignment="Center" 
+                    HorizontalAlignment="Left" Orientation="Horizontal" 
+                    Background="Transparent" Height="26">
+                            <Viewbox Margin="0" >
+                                    <Path Fill="White" 
+                      VerticalAlignment="Center" HorizontalAlignment="Center" 
+                      Data="M505.6512 39.0144c-261.2224 3.4816-470.1184 218.112-466.6368 479.4368 3.4816 261.12
+                                      218.112 470.1184 479.3344 466.6368 261.2224-3.4816 470.1184-218.112 
+                                      466.7392-479.3344C981.504 244.4288 766.8736 35.5328 505.6512
+                                      39.0144zM558.08 196.608c48.128 0 62.2592 27.9552 62.2592 59.8016 
+                                      0 39.8336-31.9488 76.6976-86.3232 76.6976-45.568 
+                                      0-67.1744-22.9376-65.9456-60.8256C468.0704
+                                      240.4352 494.7968 196.608 558.08 196.608zM434.7904 807.6288c-32.8704
+                                      0-56.9344-19.968-33.8944-107.6224l37.6832-155.5456c6.5536-24.8832
+                                      7.68-34.9184 0-34.9184-9.8304 0-52.5312 17.2032-77.7216 
+                                      34.2016l-16.384-26.9312c79.9744-66.7648 171.8272-105.8816
+                                      211.2512-105.8816 32.8704 0 38.2976 38.912 21.9136 98.6112l-43.2128 
+                                      163.5328c-7.68 28.8768-4.4032 38.912 3.2768 38.912 9.9328 0 42.1888-11.9808
+                                      73.9328-36.9664l18.6368 24.8832C552.5504 777.728 467.6608 807.6288 434.7904
+                                      807.6288z">
+                                        <Path.BitmapEffect>
+                                            <DropShadowBitmapEffect 
+                            Color="Black"
+                            Softness=".3"
+                            ShadowDepth="50"
+                            Direction="180"
+                            Opacity="1"/>
+                                        </Path.BitmapEffect>
+                                    </Path>
+                            </Viewbox> 
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
                 <Button x:Name="Settings_Btn"
-                        Margin="10,3,0,0"
+                        Margin="5,3,0,0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
                         Cursor="Hand"
@@ -255,12 +294,13 @@
                         <DropShadowBitmapEffect 
                             Color="#FF1D174A"
                             Softness=".1"
-                            ShadowDepth="1"
-                            Direction="315"
+                            ShadowDepth="1.5"
+                            Direction="255"
                             Opacity="1"/>
                     </Image.BitmapEffect>
                     </Image>
                 </Button>
+                </StackPanel>
             </Grid>
 
         </Grid>
