@@ -5,26 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SearchArchiv.Views"
         mc:Ignorable="d"
-        Title="Settings SearchArchiv" Height="650" Width="400" WindowStartupLocation="CenterScreen" Icon="SearchArchiv.ico">
+        Title="Settings SearchArchiv" SizeToContent="Height" MinHeight="350" Width="400" WindowStartupLocation="CenterScreen" Icon="SearchArchiv.ico">
     <Grid Background="#FFEEEEF2">
         <Grid.RowDefinitions>
             <RowDefinition Height="5" Tag="Margin" />
             <RowDefinition Height="74" Tag="Title" />
             <RowDefinition Height="5" Tag="Margin" />
-            <RowDefinition Height="320" Tag="Margin" />
+            <RowDefinition Height="260" Tag="Content" />
+            <RowDefinition Height="1*" Tag="AddContent" />
             <RowDefinition Height="10" Tag="Margin" />
             <RowDefinition Height="35" Tag="Buttom" />
             <RowDefinition Height="15" Tag="Margin" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10" Tag="Margin" />
-            <ColumnDefinition Width="1*" Tag="Margin" />
-            <ColumnDefinition Width="2*" Tag="Table2" />
+            <ColumnDefinition Width="1*" Tag="Table" />
             <ColumnDefinition Width="10" Tag="Margin" />
         </Grid.ColumnDefinitions>
+        <Grid.Resources>
+            <Style x:Key="ShodowText" TargetType="TextBlock">
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="BitmapEffect">
+                    <Setter.Value>
+                        <DropShadowBitmapEffect Color="White"
+                                                    Softness="0.1" 
+                                                    ShadowDepth="0.1" 
+                                                    Direction="270" 
+                                                    Opacity="1"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Grid.Resources>
+        
         <StackPanel Grid.Column="1"
-                    Grid.Row="1"
-                    Grid.ColumnSpan="2"
+                    Grid.Row="1" 
                     Background="#FF1D174A">
             <WrapPanel Orientation="Horizontal"
                        Margin="5"
@@ -57,56 +71,227 @@
                 
             </WrapPanel>
         </StackPanel>
-
-        <ScrollViewer  Grid.Column="1"
+ 
+                <ScrollViewer  Grid.Column="1"
                     Grid.Row="3" 
-                    Grid.ColumnSpan="2" Margin="15"
+                       Margin="15" MaxHeight="250"
                        ScrollViewer.CanContentScroll="True"
                        VerticalScrollBarVisibility="Auto">
-            <StackPanel  >
-                <Grid Margin="5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition SharedSizeGroup="A"/>
-                        <ColumnDefinition SharedSizeGroup="A"/>
-                        <ColumnDefinition SharedSizeGroup="A"/>
-                    </Grid.ColumnDefinitions>
-                    <Label  Content="Path0" Margin="10,0,0,0" 
-                        ToolTip="Path"/>
-                    <TextBox x:Name="Path0" Grid.Column="1" Grid.ColumnSpan="2" />
-                </Grid>
-                <Grid Margin="5,0,5,5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition SharedSizeGroup="A"/>
-                        <ColumnDefinition SharedSizeGroup="A"/>
-                        <ColumnDefinition SharedSizeGroup="A"/>
-                    </Grid.ColumnDefinitions>
-                    <Label  Content="Path" Margin="10,0,0,0"/>
-                    <TextBox x:Name="Path" Grid.Column="1" Grid.ColumnSpan="2"/>
-                </Grid>
-                <Grid Margin="5,0,5,5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition SharedSizeGroup="A"/>
-                        <ColumnDefinition SharedSizeGroup="A"/>
-                        <ColumnDefinition SharedSizeGroup="A"/>
-                    </Grid.ColumnDefinitions>
-                    <Label  Content="Path1" Margin="10,0,0,0"/>
-                    <TextBox x:Name="Path1" Grid.Column="1" Grid.ColumnSpan="2"/>
-                </Grid>
-                  
-            </StackPanel>
+            
+            
+            <ItemsControl x:Name="itemsControl">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <DataTemplate.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontSize" Value="18"/>
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                            </Style>
+                        </DataTemplate.Resources>
+                        <Border BorderBrush="White"
+                BorderThickness="3"
+                Margin="5">
+                            <Border.BitmapEffect>
+                                <DropShadowBitmapEffect Color="Black"
+                                                    Softness=".1" 
+                                                    ShadowDepth="0" 
+                                                    Direction="270" 
+                                                    Opacity="1"/>
+                            </Border.BitmapEffect>
+                            <StackPanel>
+                                <Grid Margin="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition SharedSizeGroup="A"/>
+                                        <ColumnDefinition SharedSizeGroup="A"/>
+                                        <ColumnDefinition SharedSizeGroup="A"/>
+                                        <ColumnDefinition SharedSizeGroup="A"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label  Content="Path Name:" Margin="5,0,0,0"
+                        ToolTip="Der Pfadname des zu durchsuchenden Verzeichnisses. zb. SerieH"/>
+                                    <TextBox Background="Transparent" 
+                                             VerticalAlignment="Center"
+                                             BorderThickness="0" 
+                                             x:Name="NamePath_TextBox"
+                                             Text="{Binding Name}"
+                                             ToolTip="{Binding Name}"
+                                             Grid.Column="1"
+                                             Grid.ColumnSpan="3" />
+                                </Grid>
+                                <Grid Margin="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition SharedSizeGroup="A"/>
+                                        <ColumnDefinition SharedSizeGroup="A"/>
+                                        <ColumnDefinition SharedSizeGroup="A"/>
+                                        <ColumnDefinition SharedSizeGroup="A"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="Path:" Margin="5,0,0,0"
+                                           ToolTip="Pfad, gesuchtes Verzeichnis. Ended mit(\) zb. H:\serie\ oder \\remote\netzwerk$\serie\"/>
+                                    <TextBox Background="Transparent"
+                                             VerticalAlignment="Center"
+                                             BorderThickness="0" 
+                                             x:Name="Path_TextBox"
+                                             Text="{Binding Path}"
+                                             ToolTip="{Binding Path}"
+                                             Grid.Column="1"
+                                             Grid.ColumnSpan="3"/>
+                                </Grid>
+                                <Grid Margin="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition SharedSizeGroup="A"/>
+                                        <ColumnDefinition SharedSizeGroup="A"/>
+                                        <ColumnDefinition SharedSizeGroup="A"/>
+                                        <ColumnDefinition SharedSizeGroup="A"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="Structured:" Margin="5,0,0,0"
+                                           ToolTip="Ist das zu durchsuchende Verzeichnis strukturiert? true oder false. zb. wenn ID nr. hat 54 dann 38, und Verzeichnisse namen sind erst 54, dann 38 zur Verzeichniss ID nummer, dann TRUE / Ist Strukturiert."/>
+                                    <TextBox Background="Transparent"
+                                             VerticalAlignment="Center" 
+                                             BorderThickness="0" 
+                                             x:Name="PathStructured_TextBox"
+                                             Text="{Binding Structured}"
+                                             ToolTip="{Binding Structured}"
+                                             Grid.Column="1"
+                                             Grid.ColumnSpan="3"/>
+                                </Grid>
+                                <Line Stretch="Fill" Stroke="#FF1D174A" 
+                  StrokeThickness="1" X1="1" Margin="0,0,0,1"
+                  VerticalAlignment="Center"  
+                  HorizontalAlignment="Center">
+                                    <Line.BitmapEffect>
+                                        <DropShadowBitmapEffect 
+                        Softness=".1" 
+                        ShadowDepth="0.4" 
+                        Direction="270" Color="#FF1D174A"/>
+                                    </Line.BitmapEffect>
+                                </Line>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate> 
+            </ItemsControl> 
         </ScrollViewer>
 
-        <StackPanel Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" 
+        <StackPanel x:Name="AddPath_StackPanel"
+                    Grid.Column="1" Grid.Row="4"
+                    Visibility="Collapsed"
                     HorizontalAlignment="Center"
-                    VerticalAlignment="Center" Orientation="Horizontal">
+                    VerticalAlignment="Center" >
+            <Border BorderBrush="#FF1D174A"
+                BorderThickness="3"
+                Margin="5">
+                <Border.BitmapEffect>
+                    <DropShadowBitmapEffect Color="Black"
+                                                    Softness=".1" 
+                                                    ShadowDepth="0" 
+                                                    Direction="270" 
+                                                    Opacity="1"/>
+                </Border.BitmapEffect>
+                <StackPanel>
+                    <Grid Margin="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="A"/>
+                            <ColumnDefinition SharedSizeGroup="A"/>
+                            <ColumnDefinition SharedSizeGroup="A"/>
+                            <ColumnDefinition SharedSizeGroup="A"/>
+                        </Grid.ColumnDefinitions>
+                        <Label  Content="Path Name:" Margin="5,0,0,0"
+                        ToolTip="Der Pfadname des zu durchsuchenden Verzeichnisses. zb. SerieH"/>
+                        <TextBox VerticalAlignment="Center"
+                                             BorderThickness="0" 
+                                             x:Name="NamePath_TextBox_Add"
+                                             Text=""
+                                             Grid.Column="1"
+                                             Grid.ColumnSpan="3" />
+                    </Grid>
+                    <Grid Margin="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="A"/>
+                            <ColumnDefinition SharedSizeGroup="A"/>
+                            <ColumnDefinition SharedSizeGroup="A"/>
+                            <ColumnDefinition SharedSizeGroup="A"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Path:" Margin="5,0,0,0"
+                                           ToolTip="Pfad, gesuchtes Verzeichnis. Ended mit(\) zb. H:\serie\ oder \\remote\netzwerk$\serie\"/>
+                        <TextBox VerticalAlignment="Center"
+                                             BorderThickness="0" 
+                                             x:Name="Path_TextBox_Add"
+                                             Text=""
+                                             Grid.Column="1"
+                                             Grid.ColumnSpan="3"/>
+                    </Grid>
+                    <Grid Margin="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="A"/>
+                            <ColumnDefinition SharedSizeGroup="A"/>
+                            <ColumnDefinition SharedSizeGroup="A"/>
+                            <ColumnDefinition SharedSizeGroup="A"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Structured:" Margin="5,0,0,0"
+                                           ToolTip="Ist das zu durchsuchende Verzeichnis strukturiert? true oder false. zb. wenn ID nr. hat 54 dann 38, und Verzeichnisse namen sind erst 54, dann 38 zur Verzeichniss ID nummer, dann TRUE / Ist Strukturiert."/>
+                        <TextBox VerticalAlignment="Center" 
+                                             BorderThickness="0" 
+                                             x:Name="PathStructured_TextBox_Add"
+                                             Text=""
+                                             Grid.Column="1"
+                                             Grid.ColumnSpan="3"/>
+                    </Grid>
+                    <Line Stretch="Fill" Stroke="White" 
+                  StrokeThickness="1" X1="1" Margin="0,0,0,1"
+                  VerticalAlignment="Center"  
+                  HorizontalAlignment="Center">
+                        <Line.BitmapEffect>
+                            <DropShadowBitmapEffect 
+                        Softness=".1" 
+                        ShadowDepth="0.4" 
+                        Direction="270" Color="White"/>
+                        </Line.BitmapEffect>
+                    </Line>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+        
+        <Grid Grid.Column="1" Grid.Row="6"
+                    
+                    VerticalAlignment="Center" >
 
-            <Button  Content="Anwenden"  
+            <StackPanel HorizontalAlignment="Left" 
+                    VerticalAlignment="Center"
+                        Margin="5,0,0,2">
+            <Button Background="White"
+                    Content="+"
+                    Name="AddPath_butt"
+                    Foreground="Black" 
+                    Padding="0,-3,0,0"
+                    Margin="5,2,0,0"  
+                    Width="20" 
+                    Height="20"
+                    FontSize="16"
+                    ToolTip="Add New Path"
+                    BorderBrush="#FFE2E2E2"
+                    BorderThickness="1"
+                    Cursor="Hand" Click="AddPath_butt_Click">
+                <Button.BitmapEffect>
+                    <DropShadowBitmapEffect Color="#FF9E9E9E"
+                                                    Softness=".2" 
+                                                    ShadowDepth="1" 
+                                                    Direction="270" 
+                                                    Opacity="1"/>
+                </Button.BitmapEffect>
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Button.Resources>
+            </Button> 
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+            <Button x:Name="ApplyBtn"  Content="Anwenden"  
                      Padding="5,0" 
                      Margin="0,2,10,0"
-                     Name="Apply_btn"
                      Height="26" 
                      Width="80" 
-                     Cursor="Hand"  >
+                     Cursor="Hand" Click="ApplyBtn_Click"  >
                 <Button.BitmapEffect>
                     <DropShadowBitmapEffect Color="#FFC5C5C5"
                                                     Softness=".2" 
@@ -173,7 +358,7 @@
                     </Style>
                 </Button.Resources>
             </Button>
-
-        </StackPanel>
+            </StackPanel>
+        </Grid> 
     </Grid>
 </Window>
