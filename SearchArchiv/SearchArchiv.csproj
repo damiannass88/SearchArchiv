@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -60,9 +61,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\SearchingClass.cs" />
+    <Compile Include="Classes\Settings_AppConfig_Class.cs" />
+    <Compile Include="Views\Info_Window.xaml.cs">
+      <DependentUpon>Info_Window.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Settings_Window.xaml.cs">
       <DependentUpon>Settings_Window.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\Info_Window.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -108,10 +118,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Views\SearchArchiv.ico" />
+    <Resource Include="SearchArchiv.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="SearchArchiv.ico" />
+    <Content Include="SettingsPaths.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Views\SearchArchiv.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
