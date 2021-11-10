@@ -9,7 +9,10 @@
         WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
         WindowStyle="None" 
-        Title="SearchArchiv" Height="450" Width="400" MouseDown="Window_MouseDown" Icon="SearchArchiv.ico">
+        Title="SearchArchiv" Height="520" Width="410" MouseDown="Window_MouseDown"
+        Icon="SearchArchiv.ico"
+        Deactivated="MainWindow_Name_Deactivated" 
+        Activated="MainWindow_Name_Activated">
     <Window.Background>
         <SolidColorBrush Color="Transparent"/>
 
@@ -25,28 +28,190 @@
         </Border.Background>
         <Grid x:Name="GridMain" Margin="4">
 
+            <Grid.Resources>
+                <DataTemplate x:Key="ItemsPanelTemplate">
+                    <StackPanel  Background="WhiteSmoke" 
+                            Width="{Binding ElementName=MainItemsControl,Path=ActualWidth}" 
+                                 Margin="0,0,0,4">
+
+                        <Border BorderBrush="#FF007ACC"
+                            BorderThickness="2"
+                            Margin="3" >
+                            <Grid Margin="0" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition x:Name="Gridw0" />
+                                    <ColumnDefinition x:Name="Gridw1" />
+                                    <ColumnDefinition x:Name="Gridw2" />
+                                    <ColumnDefinition x:Name="Gridw3" />
+                                    <ColumnDefinition x:Name="Gridw4" />
+                                    <ColumnDefinition x:Name="Gridw5" />
+                                    <ColumnDefinition x:Name="Gridw6" />
+                                    <ColumnDefinition x:Name="Gridw7" />
+                                    <ColumnDefinition x:Name="Gridw8" />
+
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*" x:Name="Gridh0"/>
+                                    <RowDefinition Height="1*" x:Name="Gridh1"/>
+                                    <RowDefinition Height="1*" x:Name="Gridh2"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Column="0"
+                                        Grid.ColumnSpan="3"
+                                        Grid.Row="0"
+                                        Grid.RowSpan="2"
+                                        Orientation="Vertical"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Left" Margin="3">
+                                    <TextBlock Text="Path Name:"
+                                               FontSize="14"
+                                               MinWidth="85"
+                                               Padding="3,0,0,0"
+                                           Foreground="White"
+                                           Background="#FF00497A">
+                                        <TextBlock.BitmapEffect>
+                                            <DropShadowBitmapEffect Color="White"
+                                                    Softness=".1" 
+                                                    ShadowDepth="1" 
+                                                    Direction="135" 
+                                                    Opacity="1"/>
+                                        </TextBlock.BitmapEffect>
+                                    </TextBlock>
+                                    <TextBlock FontSize="14"
+                                           Text="{Binding NameSettPath}"
+                                            Foreground="White"
+                                               MinWidth="85"
+                                               Padding="3,0,0,0"
+                                           Background="#FF00497A">
+                                        <TextBlock.BitmapEffect>
+                                            <DropShadowBitmapEffect Color="White"
+                                                    Softness=".1" 
+                                                    ShadowDepth="1" 
+                                                    Direction="135" 
+                                                    Opacity="1"/>
+                                        </TextBlock.BitmapEffect>
+                                    </TextBlock>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2" 
+                                        Grid.ColumnSpan="4"
+                                        Grid.Row="0"
+                                        Grid.RowSpan="2"
+                                        Orientation="Vertical"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Margin="3">
+                                    <TextBlock  Text="Artikelnummer:" 
+                                            FontSize="14"
+                                                MinWidth="120"
+                                            Foreground="White"
+                                                TextAlignment="Center"
+                                            Background="#FF747474">
+                                        <TextBlock.BitmapEffect>
+                                            <DropShadowBitmapEffect Color="White"
+                                                    Softness=".1" 
+                                                    ShadowDepth="1" 
+                                                    Direction="135" 
+                                                    Opacity="1"/>
+                                        </TextBlock.BitmapEffect>
+                                    </TextBlock>
+                                    <TextBox Text="{Binding NameVER}" 
+                                           FontSize="14"
+                                         IsReadOnly="True"
+                                         Foreground="White"
+                                         FontWeight="Bold"
+                                             MinWidth="120"
+                                             Padding="5,0,0,0"
+                                           Background="#FF747474"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="0"
+                                            Grid.ColumnSpan="5"
+                                            Grid.Row="2"  
+                                            Margin="35,3,3,3"
+                                            Orientation="Horizontal"
+                                            HorizontalAlignment="Left">
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding OldVersionNameAndPath}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Hidden"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
+                                    <Border BorderBrush="Gray" 
+                                            BorderThickness="1">
+                                    <TextBlock Text="Alt Stand: "
+                                               Padding="5,2,0,0"
+                                               Foreground="#FF747474"
+                                               FontSize="12" 
+                                               TextAlignment="Center"
+                                               Background="#FFEAEAEA"/>
+                                    </Border>
+                                    <ComboBox Name="Dropdown_OldVerions"
+                                                  Height="25"  
+                                                  BorderBrush="White"
+                                                  Cursor="Hand" 
+                                                  SelectedIndex="1"
+                                                  ItemsSource="{Binding OldVersionNameAndPath}"
+                                                  SelectionChanged="Dropdown_OldVerions_SelectionChanged" >
+                                        <ComboBox.BitmapEffect>
+                                            <DropShadowBitmapEffect Color="White"
+                                                    Softness=".1" 
+                                                    ShadowDepth="1" 
+                                                    Direction="45" 
+                                                    Opacity="1"/>
+                                        </ComboBox.BitmapEffect>
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding NameIDsOld}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate> 
+                                    </ComboBox> 
+                                </StackPanel>
+
+
+                                <WrapPanel Grid.Column="6"
+                                       Grid.ColumnSpan="3"
+                                       Grid.Row="0"
+                                       Grid.RowSpan="3"
+                                       VerticalAlignment="Center">
+
+                                    <Button Width="27" Height="27" Margin="1" Content="CC"/>
+                                    <Button Width="27" Height="27" Margin="1" Content="CC"/>
+                                    <Button Width="27" Height="27" Margin="1" Content="CC"/>
+                                    <Button Width="27" Height="27" Margin="1" Content="CC"/>
+                                    <Button Width="27" Height="27" Margin="1" Content="CC"/>
+                                    <Button Width="27" Height="27" Margin="1" Content="CC"/>
+                                    <Button Width="27" Height="27" Margin="1" Content="CC"/>
+                                    <Button Width="27" Height="27" Margin="1" Content="CC"/>
+
+                                </WrapPanel>
+
+
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </DataTemplate>
+            </Grid.Resources>
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="5" Tag="Margin" />
                 <RowDefinition Height="30" Tag="Title" /> 
                 <RowDefinition Height="50" Tag="Input_Area" />  
-                <RowDefinition Height="1*" MinHeight="180" Tag="Table1" />
-                <RowDefinition Height="120" Tag="Table2" />
+                <RowDefinition Height="225" MinHeight="180" Tag="Table1" />
+                <RowDefinition Height="125" Tag="Table2" />
                 <RowDefinition Height="40" Tag="Footer" />
                 <RowDefinition Height="5" Tag="Margin" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="10" Tag="Margin" />
-                <ColumnDefinition Width="1*" MinWidth="360" Tag="Table2" />
+                <ColumnDefinition x:Name="Column_Table" Width="1*" MinWidth="360"/>
                 <ColumnDefinition Width="10" Tag="Margin" />
             </Grid.ColumnDefinitions>
             
-            <Grid.Resources>
-                <!--<Style TargetType="Label">
-                    <Setter Property="HorizontalAlignment" Value="Right"></Setter>
-                </Style>-->
-            </Grid.Resources>
-
+            
             <TextBlock x:Name="AppTitle" 
                        Text="SearchArchiv"
                        Grid.Column="1"
@@ -99,7 +264,7 @@
                     ToolTip="Close SuchArchiv"
                  Cursor="Hand" Click="CloseBtn_Click"/>
             </WrapPanel>
-            <StackPanel Grid.Column="1" Grid.Row="2" 
+            <StackPanel x:Name="StackPanel_1" Grid.Column="1" Grid.Row="2" 
                         VerticalAlignment="Center"
                         Margin="0,10,0,0"
                         HorizontalAlignment="Center"
@@ -117,20 +282,24 @@
                                                     Opacity="1"/>
                     </TextBlock.BitmapEffect>
                 </TextBlock>
-                <TextBox x:Name="ID_Input"
-                         MinWidth="120"
-                         FontSize="15"
-                         VerticalAlignment="Center"
-                         BorderBrush="White"
-                         BorderThickness="15,2,15,2">
-                    <TextBox.BitmapEffect>
+                <Border BorderBrush="White" BorderThickness="20,2,20,2">
+                    <Border.BitmapEffect>
                         <DropShadowBitmapEffect Color="#FF1D174A"
                                                     Softness=".1" 
                                                     ShadowDepth="1" 
                                                     Direction="270" 
                                                     Opacity="1"/>
-                    </TextBox.BitmapEffect>
-                </TextBox>
+                    </Border.BitmapEffect>
+                <TextBox x:Name="ID_Input"
+                         MinWidth="80"
+                         FontSize="15"
+                         Text="5438123"
+                         VerticalAlignment="Center"
+                         HorizontalAlignment="Center"
+                         BorderBrush="White"
+                         BorderThickness="0"> 
+                    </TextBox>
+                </Border>
                 <Button x:Name="ClearInput"
                         Content="X"
                         FontSize="15"
@@ -169,48 +338,52 @@
                 </Button>
             </StackPanel>
 
-            <DataGrid x:Name="datagrid"
-                      Grid.Row="3"
-                      Grid.Column="1"
-                      Background="White"></DataGrid>
+            <ScrollViewer  Grid.Column="1"
+                           Grid.Row="3" 
+                           ScrollViewer.CanContentScroll="True"
+                           VerticalScrollBarVisibility="Visible">
+                
+                <ItemsControl x:Name="MainItemsControl"  
+                              ItemTemplate="{StaticResource ItemsPanelTemplate}"
+                               >
+                    <ItemsControl.Background>
+                        <LinearGradientBrush StartPoint="1,0" EndPoint="0,1" 
+                                 MappingMode="RelativeToBoundingBox">
+                            <GradientStop Color="#B2F2F2F2" Offset="0"/>
+                            <GradientStop Color="#B2A1A1A1" Offset="1"/>
+                        </LinearGradientBrush>
+                    </ItemsControl.Background>
+                </ItemsControl>
+            </ScrollViewer>
 
-            <StackPanel Grid.Column="1" Grid.Row="4"
-                        VerticalAlignment="Center"
-                        Margin="0,10,0,0"
+            <StackPanel x:Name="StackPanel_Width" Grid.Column="1" Grid.Row="4"
+                        VerticalAlignment="Top" 
                         HorizontalAlignment="Left"
-                        Orientation="Horizontal">
-                <TextBlock Text="Vorherige Versionen : "
-                           Padding="5,2,0,0"
-                           FontSize="15" TextAlignment="Center"
-                           Background="#CC0E0E0E" Foreground="#FFF1F1F1">
+                        Orientation="Vertical"
+                        Margin="0,10,0,0">
+                
+                 <TextBlock Text="Vorherige Versionen : "
+                           Padding="5,1,0,2"
+                           FontSize="15"
+                            Margin="10,0,0,5"
+                            TextAlignment="Center" 
+                            VerticalAlignment="Top" 
+                        HorizontalAlignment="Left"
+                           Background="#FF4F4F4F"
+                            Foreground="#FFF1F1F1">
                     <TextBlock.BitmapEffect>
-                        <DropShadowBitmapEffect Color="White"
+                        <DropShadowBitmapEffect Color="#FF4F4F4F"
                                                     Softness=".1" 
                                                     ShadowDepth="1" 
-                                                    Direction="135" 
+                                                    Direction="270" 
                                                     Opacity="1"/>
                     </TextBlock.BitmapEffect>
                 </TextBlock>
-                <ComboBox Name="Dropdown_Revisions"
-                  Height="25" Width="200" 
-                  BorderBrush="White"  
-                          Cursor="Hand">
-                    <ComboBox.BitmapEffect>
-                        <DropShadowBitmapEffect Color="White"
-                                                    Softness=".1" 
-                                                    ShadowDepth="1" 
-                                                    Direction="45" 
-                                                    Opacity="1"/>
-                    </ComboBox.BitmapEffect>
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" >
-                                <TextBlock Text="{Binding}"></TextBlock>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-                
+
+                <ItemsControl x:Name="ItemsControl_OldVersionIDs" 
+                              ItemTemplate="{StaticResource ItemsPanelTemplate}">
+                </ItemsControl>
+ 
             </StackPanel>
              
             <Grid Grid.Column="1" 
@@ -220,14 +393,7 @@
                        Margin="10,3,0,0"
                        Width="75" 
                        HorizontalAlignment="Left"
-                       VerticalAlignment="Center">
-                    <!--<Image.BitmapEffect>
-                    <DropShadowBitmapEffect Color="#FFFFA200"
-                                                    Softness=".4" 
-                                                    ShadowDepth="2" 
-                                                    Direction="270" 
-                                                    Opacity="1"/>
-                </Image.BitmapEffect>-->
+                       VerticalAlignment="Center"> 
                     </Image>
                 
                 <TextBlock x:Name="Adwers_footer"
@@ -302,7 +468,7 @@
                 </Button>
                 </StackPanel>
             </Grid>
-
+ 
         </Grid>
-    </Border>
+    </Border> 
 </Window>
