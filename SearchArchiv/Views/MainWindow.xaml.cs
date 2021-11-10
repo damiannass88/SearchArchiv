@@ -29,13 +29,16 @@ namespace SearchArchiv.Views
             InitializeComponent();
             LoadImages();
         }
+
+        private bool IsWindowFocused = true;
+
         private void LoadImages()
         {
             // Methode to Get base64 image string, and set on Image Source.
             Logo_Firm_image.Source = ImagesClass.MemoringStreamBitmap(Convert.FromBase64String(ImagesClass.SaxasImageBase64));
             Settings_BtnIcon.Source = ImagesClass.MemoringStreamBitmap(Convert.FromBase64String(ImagesClass.SettingsImageBase64));
-        }
-        
+        } 
+
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             // DragMove Window Methode
@@ -80,8 +83,8 @@ namespace SearchArchiv.Views
         { 
             // Start searching ID number.
             SearchingClass searchingClass = new SearchingClass();
-            searchingClass.StartSearch(ID_Input.Text.Trim().ToString());
-           
+          var ResultsDates = searchingClass.StartSearch(ID_Input.Text.Trim().ToString()); 
+            MainItemsControl.ItemsSource = ResultsDates;
         }
  
         private void Settings_Btn_Click(object sender, RoutedEventArgs e)
@@ -105,5 +108,58 @@ namespace SearchArchiv.Views
                 return;
             }
         }
+
+        private void GetOldIDFiles(string NameIDsOld, string NameSettPathOld, string PathToFolderOld)
+        {
+            SearchingClass searchingClass = new SearchingClass();
+
+            // Get files for concrete old ID version Item.
+            var ResultsFiles = searchingClass.GetOldIdItemsFromStructedLevel(NameIDsOld, NameSettPathOld, PathToFolderOld);
+
+            if (ItemsControl_OldVersionIDs.ItemsSource != null)
+                ItemsControl_OldVersionIDs.ItemsSource = null;
+
+            ItemsControl_OldVersionIDs.ItemsSource = ResultsFiles;
+        } 
+
+        private void MainWindow_Name_Activated(object sender, EventArgs e)
+        {
+            if (IsWindowFocused)
+            {
+
+                ID_Input.SelectionStart = 0;
+                ID_Input.SelectionLength = ID_Input.Text.Length; 
+                ID_Input.Focus(); 
+                IsWindowFocused = false;
+            } 
+        }
+
+        private void MainWindow_Name_Deactivated(object sender, EventArgs e)
+        { 
+            IsWindowFocused = true;
+        }
+        
+        private void Dropdown_OldVerions_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                var SenderComboBoxItem = sender as System.Windows.Controls.ComboBox;
+                if (SenderComboBoxItem.Items.Count == 0)
+                    return;
+                var NameIDsOld = ((SearchArchiv.Classes.SearchingClass.OldVerDates)SenderComboBoxItem.SelectedValue).NameIDsOld;
+                var NameSettPathOld = ((SearchArchiv.Classes.SearchingClass.OldVerDates)SenderComboBoxItem.SelectedValue).NameSettPathOld;
+                var PathToFolderOld = ((SearchArchiv.Classes.SearchingClass.OldVerDates)SenderComboBoxItem.SelectedValue).PathToFolderOld;
+
+                GetOldIDFiles(NameIDsOld, NameSettPathOld, PathToFolderOld);
+
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n" +
+                    "  -Bitte verwenden Sie eine andere ID Numer. \n\nSearchArchiv Fehler-Hinweis: (F4) \n\nError Message: \n"
+                    + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+            }
+        }
+
     }
 }
