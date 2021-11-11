@@ -17,6 +17,7 @@ namespace SearchArchiv.Classes
         public string Name { get; set; }
         public string Path { get; set; }
         public bool Structured { get; set; } 
+        public string PriorityColor { get; set; } 
     }
 
     public class Settings_AppConfig_Class {
@@ -40,9 +41,10 @@ namespace SearchArchiv.Classes
                      
                     ListSettingsPaths.Add(new PathsCollection()
                     {
-                        Name = xelement.Attribute("name").Value,
-                        Path = xelement.Attribute("path").Value,
-                        Structured = Convert.ToBoolean(xelement.Attribute("structured").Value)
+                        Name = xelement.Attribute("Name").Value,
+                        Path = xelement.Attribute("Path").Value,
+                        Structured = Convert.ToBoolean(xelement.Attribute("Structured").Value),
+                        PriorityColor = xelement.Attribute("PriorityColor").Value,
                     });
                 }
                 if (ListSettingsPaths.Any())
@@ -70,9 +72,10 @@ namespace SearchArchiv.Classes
                 foreach (PathsCollection newItem in NewListPaths)
                 {
                     XElement NewPath = new XElement("Path");
-                    NewPath.Add(new XAttribute("name", newItem.Name));
-                    NewPath.Add(new XAttribute("path", newItem.Path));
-                    NewPath.Add(new XAttribute("structured", newItem.Structured.ToString().ToLower()));
+                    NewPath.Add(new XAttribute("Name", newItem.Name));
+                    NewPath.Add(new XAttribute("Path", newItem.Path));
+                    NewPath.Add(new XAttribute("Structured", newItem.Structured.ToString().ToLower()));
+                    NewPath.Add(new XAttribute("PriorityColor", newItem.PriorityColor));
 
                     XML.Element("Paths").Add(NewPath);
                 }
