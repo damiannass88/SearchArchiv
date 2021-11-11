@@ -282,7 +282,7 @@
                                             Height="28"  
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Center"
-                                            Background="Transparent" Click="IconBtn_Loupe_Click">
+                                            Background="Transparent" MouseDoubleClick="IconBtn_Loupe_MouseDoubleClick">
                                         <Button.ToolTip>
                                             <ToolTip x:Name="ToolTipTIF"
                                             OverridesDefaultStyle="True"
@@ -598,7 +598,7 @@
                                             BorderThickness="0"
                                             Width="34" 
                                             Height="28" 
-                                            ToolTip="Quick Preview 3D-Datei."
+                                            ToolTip="3D Model, JT-Datei Öffnen."
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Center"
                                             Background="Transparent" Click="IconBtn_3d_Click">
@@ -748,7 +748,7 @@
                 <TextBox x:Name="ID_Input"
                          MinWidth="80"
                          FontSize="15"
-                         Text="5438123"
+                         Text=""
                          VerticalAlignment="Center"
                          HorizontalAlignment="Center"
                          BorderBrush="White"
