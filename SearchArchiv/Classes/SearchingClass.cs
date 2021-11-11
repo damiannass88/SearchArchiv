@@ -24,6 +24,7 @@ namespace SearchArchiv.Classes
             public string PathToDOC { get; set; }
             public List<OldVerDates> OldVersionNameAndPath { get; set; }
             public string NameIDsOld { get; set; }
+            public string PriorityColor { get; set; }
         }
         public struct OldVerDates
         {
@@ -50,14 +51,14 @@ namespace SearchArchiv.Classes
                 if (path.Structured)
                 {
                     // Start searching ID number with Structured form method
-                    var result = LookForStructedLevels(path.Name, path.Path, IDnumber);
+                    var result = LookForStructedLevels(path.Name, path.Path, IDnumber, path.PriorityColor);
                     if (result != null)
                         ResultsFromPaths.AddRange(result);
                 }
                 else
                 {
                     // Start searching ID number with one level structur folder method
-                    var result = LookOneLevel(path.Name, path.Path, IDnumber);
+                    var result = LookOneLevel(path.Name, path.Path, IDnumber, path.PriorityColor);
 
                     if (result != null)
                         ResultsFromPaths.AddRange(result);
@@ -66,34 +67,42 @@ namespace SearchArchiv.Classes
             return ResultsFromPaths;
         }
 
-        public List<IDsDates> LookOneLevel(string PathName, string Path, string IDnumber)
+        public List<IDsDates> LookOneLevel(string PathName, string Path, string IDnumber, string PriorityColor)
         {
             var results = new List<IDsDates>();
             try
             {
-                var PathResults = Directory.EnumerateFiles(Path, IDnumber + "*", SearchOption.TopDirectoryOnly);
-                if (PathResults.Any())
+                if (Directory.Exists(Path))
                 {
-                    var PathtoPdf = PathResults.OrderBy(s => s).Where(a => a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "pdf").LastOrDefault();
-                    var PathtoDxf = PathResults.OrderBy(s => s).Where(a => a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "dxf").LastOrDefault();
-                    var PathtoTif = PathResults.OrderBy(s => s).Where(a => a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "tif").LastOrDefault();
-                    var PathtoJt = PathResults.OrderBy(s => s).Where(a => a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "jt").LastOrDefault();
-                    var PathtoDoc = PathResults.OrderBy(s => s)
-                        .Where(a => a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "doc" || a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "docx").LastOrDefault();
-                    var Pathtofolder = Path;
-                    var NameVer = PathtoPdf.Remove(0, PathtoPdf.LastIndexOf(@"\") + 1).ToUpper();
-
-                    results.Add(new IDsDates()
+                    var PathResults = Directory.EnumerateFiles(Path, IDnumber + "*", SearchOption.TopDirectoryOnly);
+                    if (PathResults.Any())
                     {
-                        NameVER = NameVer,
-                        NameSettPath = PathName,
-                        PathToPDF = PathtoPdf,
-                        PathToDXF = PathtoDxf,
-                        PathToTIF = PathtoTif,
-                        PathToJT = PathtoJt,
-                        PathToFolder = Pathtofolder,
-                        PathToDOC = PathtoDoc
-                    });
+                        var PathtoPdf = PathResults.OrderBy(s => s).Where(a => a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "pdf").LastOrDefault();
+                        var PathtoDxf = PathResults.OrderBy(s => s).Where(a => a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "dxf").LastOrDefault();
+                        var PathtoTif = PathResults.OrderBy(s => s).Where(a => a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "tif").LastOrDefault();
+                        var PathtoJt = PathResults.OrderBy(s => s).Where(a => a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "jt").LastOrDefault();
+                        var PathtoDoc = PathResults.OrderBy(s => s)
+                            .Where(a => a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "doc" || a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "docx").LastOrDefault();
+                        var Pathtofolder = Path;
+                        var NameVer = PathtoPdf.Remove(0, PathtoPdf.LastIndexOf(@"\") + 1).ToUpper();
+
+                        results.Add(new IDsDates()
+                        {
+                            NameVER = NameVer,
+                            NameSettPath = PathName,
+                            PathToPDF = PathtoPdf,
+                            PathToDXF = PathtoDxf,
+                            PathToTIF = PathtoTif,
+                            PathToJT = PathtoJt,
+                            PathToFolder = Pathtofolder,
+                            PathToDOC = PathtoDoc,
+                            PriorityColor = PriorityColor
+                        });
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
                 else
                 {
@@ -108,7 +117,7 @@ namespace SearchArchiv.Classes
             return results;
         }
 
-        public List<IDsDates> LookForStructedLevels(string PathName, string Path, string IDnumber)
+        public List<IDsDates> LookForStructedLevels(string PathName, string Path, string IDnumber, string PriorityColor)
         {
             var results = new List<IDsDates>();
             List<OldVerDates> oldversionNameAndPath = new List<OldVerDates>();
@@ -150,7 +159,7 @@ namespace SearchArchiv.Classes
                             var PathtoJt = ItemsInDirector.OrderBy(s => s).Where(a => a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "jt").LastOrDefault();
                             var PathtoDoc = ItemsInDirector.OrderBy(s => s)
                                 .Where(a => a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "doc" || a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "docx").LastOrDefault();
-                            var Pathtofolder = ActualPath;
+                            var Pathtofolder = LastDirector;
                             var NameVer = LastDirector.Remove(0, LastDirector.LastIndexOf(@"\") + 1).ToUpper();
 
                             results.Add(new IDsDates()
@@ -163,7 +172,8 @@ namespace SearchArchiv.Classes
                                 PathToJT = PathtoJt,
                                 PathToFolder = Pathtofolder,
                                 PathToDOC = PathtoDoc,
-                                OldVersionNameAndPath = oldversionNameAndPath
+                                OldVersionNameAndPath = oldversionNameAndPath,
+                                PriorityColor = PriorityColor
                             });
                         } 
                     }
@@ -219,7 +229,8 @@ namespace SearchArchiv.Classes
                             PathToJT = PathtoJt,
                             PathToFolder = PathToFolderOld,
                             PathToDOC = PathtoDoc,
-                            NameIDsOld = NameIDsOld
+                            NameIDsOld = NameIDsOld,
+                            PriorityColor = "DimGray"
                         });
                     }
                     else
