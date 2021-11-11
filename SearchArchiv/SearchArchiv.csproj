@@ -121,10 +121,29 @@
     <Resource Include="SearchArchiv.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Icons\Icon_3D.png" />
+    <Resource Include="Icons\Icon_3D_bw.png" />
+    <Resource Include="Icons\Icon_Folder_bw.png" />
+    <Resource Include="Icons\Icon_OpenPDF.png" />
+    <Resource Include="Icons\Icon_Folder.png" />
+    <Resource Include="Icons\Icon_OpenDOC.png" />
+    <Resource Include="Icons\Icon_OpenDOC_bw.png" />
+    <Resource Include="Icons\Icon_OpenDXF.png" />
+    <Resource Include="Icons\Icon_OpenDXF_bw.png" />
+    <Resource Include="Icons\Icon_SaveDXF.png" />
+    <Resource Include="Icons\Icon_SaveDXF_bw.png" />
+    <Resource Include="Icons\Icon_SavePDF.png" />
+    <Resource Include="Icons\Icon_SavePDF_bw.png" />
+    <Resource Include="Icons\Icon_OpenPDF_bw.png" />
+    <Resource Include="Icons\Icon_Print.png" />
+    <Resource Include="Icons\Icon_Print_bw.png" />
+    <Resource Include="Icons\Icon_Loupe.png" />
+    <Resource Include="Icons\Icon_Loupe_bw.png" />
     <Content Include="SettingsPaths.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="Views\SearchArchiv.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
