@@ -41,7 +41,7 @@ namespace SearchArchiv.Classes
 
         public List<IDsDates> SearchFiles(string IDnumber)
         {
-            // Czy lepiej ją zapisać?
+            // Always current dates.
             var Paths = Settings_AppConfig_Class.GetPathsFromXML();
 
             List<IDsDates> ResultsFromPaths = new List<IDsDates>();
@@ -65,6 +65,85 @@ namespace SearchArchiv.Classes
                 }
             }
             return ResultsFromPaths;
+        }
+         
+        public List<IDsDates> LookForStructedLevels(string PathName, string Path, string IDnumber, string PriorityColor)
+        {
+            var results = new List<IDsDates>();
+            List<OldVerDates> oldversionNameAndPath = new List<OldVerDates>();
+
+            string FirstFolder = IDnumber.Substring(0, 2);
+            string SecondFolder = IDnumber.Substring(2, 2);
+            string ActualPath = Path + @"\" + FirstFolder + @"\" + SecondFolder;
+
+            try
+            {
+                if (Directory.Exists(ActualPath))
+                {
+                    var DirectorColl = Directory.EnumerateDirectories(ActualPath, IDnumber + "*", SearchOption.TopDirectoryOnly);
+                    if (DirectorColl.Any())
+                    { 
+                        DirectorColl = DirectorColl.OrderBy(a => Directory.GetCreationTime(a));
+                        if (DirectorColl.Count() > 1)
+                        {
+                            // It's sorted Desc with creating data.
+                            foreach (var director in DirectorColl.OrderByDescending(a => a))
+                            {
+                                oldversionNameAndPath.Add(new OldVerDates() { 
+                                NameIDsOld = director.Remove(0, director.LastIndexOf(@"\") + 1).ToUpper(),
+                                NameSettPathOld = PathName,
+                                PathToFolderOld = director.ToString(),
+                                });
+                            }
+                        }
+                        var LastDirector = DirectorColl.Last();
+
+                        var ItemsInDirector = Directory.EnumerateFiles(LastDirector, "*", SearchOption.TopDirectoryOnly);
+
+                        if (ItemsInDirector.Any())
+                        {
+                            var PathtoPdf = ItemsInDirector.OrderBy(s => s).Where(a => a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "pdf").LastOrDefault();
+                            var PathtoDxf = ItemsInDirector.OrderBy(s => s).Where(a => a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "dxf").LastOrDefault();
+                            var PathtoTif = ItemsInDirector.OrderBy(s => s).Where(a => a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "tif").LastOrDefault();
+                            var PathtoJt = ItemsInDirector.OrderBy(s => s).Where(a => a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "jt").LastOrDefault();
+                            var PathtoDoc = ItemsInDirector.OrderBy(s => s)
+                                .Where(a => a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "doc" || a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "docx").LastOrDefault();
+                            var Pathtofolder = LastDirector;
+                            var NameVer = LastDirector.Remove(0, LastDirector.LastIndexOf(@"\") + 1).ToUpper();
+
+                            results.Add(new IDsDates()
+                            {
+                                NameVER = NameVer,
+                                NameSettPath = PathName,
+                                PathToPDF = PathtoPdf,
+                                PathToDXF = PathtoDxf,
+                                PathToTIF = PathtoTif,
+                                PathToJT = PathtoJt,
+                                PathToFolder = Pathtofolder,
+                                PathToDOC = PathtoDoc,
+                                OldVersionNameAndPath = oldversionNameAndPath,
+                                PriorityColor = PriorityColor
+                            });
+                        } 
+                    }
+                    else
+                    {
+                        return null;
+                    }
+
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere ID Numer. \n\nSearchArchiv Fehler-Hinweis: (F2) \n\nError Message: \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                return null;
+            }
+
+            return results;
         }
 
         public List<IDsDates> LookOneLevel(string PathName, string Path, string IDnumber, string PriorityColor)
@@ -116,87 +195,6 @@ namespace SearchArchiv.Classes
             }
             return results;
         }
-
-        public List<IDsDates> LookForStructedLevels(string PathName, string Path, string IDnumber, string PriorityColor)
-        {
-            var results = new List<IDsDates>();
-            List<OldVerDates> oldversionNameAndPath = new List<OldVerDates>();
-
-            string FirstFolder = IDnumber.Substring(0, 2);
-            string SecondFolder = IDnumber.Substring(2, 2);
-            string ActualPath = Path + @"\" + FirstFolder + @"\" + SecondFolder;
-
-            try
-            {
-                if (Directory.Exists(ActualPath))
-                {
-                    var DirectorColl = Directory.EnumerateDirectories(ActualPath, IDnumber + "*", SearchOption.TopDirectoryOnly);
-                    if (DirectorColl.Any())
-                    { 
-                        DirectorColl = DirectorColl.OrderBy(a => Directory.GetCreationTime(a));
-                        if (DirectorColl.Count() > 1)
-                        {
-                            // It's sorted with creating data.
-                            foreach (var director in DirectorColl)
-                            {
-                                oldversionNameAndPath.Add(new OldVerDates() { 
-                                NameIDsOld = director.Remove(0, director.LastIndexOf(@"\") + 1).ToUpper(),
-                                NameSettPathOld = PathName,
-                                PathToFolderOld = director.ToString(),
-                                });
-                            }
-                        }
-                        var LastDirector = DirectorColl.Last();
-
-                        var ItemsInDirector = Directory.EnumerateFiles(LastDirector, "*", SearchOption.TopDirectoryOnly);
-                        // var ItemsInDirector = Directory.EnumerateFiles(LastDirector, "*", SearchOption.TopDirectoryOnly).OrderBy(a => File.GetCreationTime(a));
-
-                        if (ItemsInDirector.Any())
-                        {
-                            var PathtoPdf = ItemsInDirector.OrderBy(s => s).Where(a => a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "pdf").LastOrDefault();
-                            var PathtoDxf = ItemsInDirector.OrderBy(s => s).Where(a => a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "dxf").LastOrDefault();
-                            var PathtoTif = ItemsInDirector.OrderBy(s => s).Where(a => a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "tif").LastOrDefault();
-                            var PathtoJt = ItemsInDirector.OrderBy(s => s).Where(a => a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "jt").LastOrDefault();
-                            var PathtoDoc = ItemsInDirector.OrderBy(s => s)
-                                .Where(a => a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "doc" || a.Remove(0, a.LastIndexOf(".") + 1).ToLower() == "docx").LastOrDefault();
-                            var Pathtofolder = LastDirector;
-                            var NameVer = LastDirector.Remove(0, LastDirector.LastIndexOf(@"\") + 1).ToUpper();
-
-                            results.Add(new IDsDates()
-                            {
-                                NameVER = NameVer,
-                                NameSettPath = PathName,
-                                PathToPDF = PathtoPdf,
-                                PathToDXF = PathtoDxf,
-                                PathToTIF = PathtoTif,
-                                PathToJT = PathtoJt,
-                                PathToFolder = Pathtofolder,
-                                PathToDOC = PathtoDoc,
-                                OldVersionNameAndPath = oldversionNameAndPath,
-                                PriorityColor = PriorityColor
-                            });
-                        } 
-                    }
-                    else
-                    {
-                        return null;
-                    }
-
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere ID Numer. \n\nSearchArchiv Fehler-Hinweis: (F2) \n\nError Message: \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
-                return null;
-            }
-
-            return results;
-        }
-
 
         public List<IDsDates> GetOldIdItemsFromStructedLevel(string NameIDsOld, string NameSettPathOld, string PathToFolderOld)
         {
