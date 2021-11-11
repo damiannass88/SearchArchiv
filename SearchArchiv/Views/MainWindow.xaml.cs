@@ -89,13 +89,18 @@ namespace SearchArchiv.Views
         {
             // Start searching ID number.
             var SKey = ID_Input.Text.Trim().ToString();
-
+             
+            //Clear Views if nothing to search.
             if (SKey == "")
             {
                 MainItemsControl.ItemsSource = null;
                 ItemsControl_OldVersionIDs.ItemsSource = null;
                 return;
             }
+
+            //Clear View OldVersionIDs, for new searching.
+            if (ItemsControl_OldVersionIDs.ItemsSource != null)
+                ItemsControl_OldVersionIDs.ItemsSource = null;
 
             SearchingClass searchingClass = new SearchingClass();
             var ResultsDates = searchingClass.StartSearch(SKey);
