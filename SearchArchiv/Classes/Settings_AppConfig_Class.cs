@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,12 +13,67 @@ namespace SearchArchiv.Classes
     /// <summary>
     /// Class to menagment Config XML file, with paths to be searched
     /// </summary>
-    public struct PathsCollection
+    public class PathsCollection : INotifyPropertyChanged
     {
-        public string Name { get; set; }
-        public string Path { get; set; }
-        public bool Structured { get; set; } 
-        public string PriorityColor { get; set; } 
+        private string name { get; set; }
+        public string Name
+        {
+            get { return this.name; }
+            set
+            {
+                if (this.name != value)
+                {
+                    this.name = value;
+                    this.NotifyPropertyChanged("Name");
+                }
+            }
+        }
+        private string path { get; set; }
+        public string Path
+        {
+            get { return this.path; }
+            set
+            {
+                if (this.path != value)
+                {
+                    this.path = value;
+                    this.NotifyPropertyChanged("Path");
+                }
+            }
+        }
+        private bool structured { get; set; } 
+        public bool Structured
+        {
+            get { return this.structured; }
+            set
+            {
+                if (this.structured != value)
+                {
+                    this.structured = value;
+                    this.NotifyPropertyChanged("Structured");
+                }
+            }
+        }
+        private string priorityColor { get; set; }
+        public string PriorityColor
+        {
+            get { return this.priorityColor; }
+            set
+            {
+                if (this.priorityColor != value)
+                {
+                    this.priorityColor = value;
+                    this.NotifyPropertyChanged("PriorityColor");
+                }
+            }
+        }
+         
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void NotifyPropertyChanged(string propName)
+        {
+            if (this.PropertyChanged != null)
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
+        }
     }
 
     public class Settings_AppConfig_Class {

@@ -112,7 +112,7 @@
                                              VerticalAlignment="Center"
                                              BorderThickness="0" 
                                              x:Name="NamePath_TextBox"
-                                             Text="{Binding Name}"
+                                             Text="{Binding Name, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"
                                              ToolTip="{Binding Name}"
                                              Grid.Column="1"
                                              Grid.ColumnSpan="3" />
@@ -130,7 +130,7 @@
                                              VerticalAlignment="Center"
                                              BorderThickness="0" 
                                              x:Name="Path_TextBox"
-                                             Text="{Binding Path}"
+                                             Text="{Binding Path, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"
                                              ToolTip="{Binding Path}"
                                              Grid.Column="1"
                                              Grid.ColumnSpan="3"/>
@@ -148,7 +148,7 @@
                                              VerticalAlignment="Center" 
                                              BorderThickness="0" 
                                              x:Name="PathStructured_TextBox"
-                                             Text="{Binding Structured}"
+                                             Text="{Binding Structured, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"
                                              ToolTip="{Binding Structured}"
                                              Grid.Column="1"
                                              Grid.ColumnSpan="3"/>
@@ -166,7 +166,7 @@
                                              VerticalAlignment="Center" 
                                              BorderThickness="0" 
                                              x:Name="PathPrioColor_TextBox"
-                                             Text="{Binding PriorityColor}"
+                                             Text="{Binding PriorityColor, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"
                                              ToolTip="{Binding PriorityColor}"
                                              Grid.Column="1"
                                              Grid.ColumnSpan="3"/>

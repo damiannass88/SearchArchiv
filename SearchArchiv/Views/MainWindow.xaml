@@ -147,7 +147,7 @@
                                                   Height="25"  
                                                   BorderBrush="White"
                                                   Cursor="Hand" 
-                                                  SelectedIndex="1"
+                                                  SelectedIndex="0"
                                                   ItemsSource="{Binding OldVersionNameAndPath}"
                                                   SelectionChanged="Dropdown_OldVerions_SelectionChanged" >
                                         <ComboBox.BitmapEffect>
@@ -656,7 +656,7 @@
                 <RowDefinition Height="30" Tag="Title" /> 
                 <RowDefinition Height="50" Tag="Input_Area" />  
                 <RowDefinition Height="245" MinHeight="180" Tag="Table1" />
-                <RowDefinition Height="1*" MinHeight="10" Tag="Table2" />
+                <RowDefinition Height="1*" MinHeight="15" Tag="Table2" />
                 <RowDefinition Height="40" Tag="Footer" />
                 <RowDefinition Height="5" Tag="Margin" />
             </Grid.RowDefinitions>

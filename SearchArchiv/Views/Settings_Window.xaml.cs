@@ -55,11 +55,10 @@ namespace SearchArchiv.Views
         private void SavePathSettings()
         {
             // Methode to send inputs dates in class Settings_AppConfig, if everythings ist right.
-           var ItemPaths = itemsControl.Items;
-
+  
             List<PathsCollection> NewListPaths = new List<PathsCollection>();
 
-            foreach (PathsCollection item in ItemPaths)
+            foreach (PathsCollection item in itemsControl.Items)
             {
                 NewListPaths.Add(new PathsCollection()
                 {
