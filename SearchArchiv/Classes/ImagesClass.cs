@@ -13,6 +13,23 @@ namespace SearchArchiv.Classes
         /// <summary>
         /// Class for return Base64 png string Image
         /// </summary>
+        public static string AdwersStuctLogoImageBase64
+        {
+            // return image in form base64: "data:image/png;base64,"
+            get
+            {
+                return "iVBORw0KGgoAAAANSUhEUgAAAGQAAAAjCAAAAABH1PBcAAADtklEQVRIx+XWoYvrShTA4fwHK9detbrmmpoVK2pWLFTU1NXE1KyoWrGqpqJQW7NwRaFQCEshIlAoFSMCETExISIQ" +
+                    "MwTCwDAQjvg90e7d3be7l8fj9vHgHpVhJucLM8PJ8fgPwvtzER21Z0HMUr8Osjv7L5FWPd6/j8nmNbG6Wv0GxE29j9ErTktkshoeE4sxkt3Z1gJiBLAtYIwAYhHjwBnTfoasfmZ+mE" +
+                    "6nD6fnoTsuKQf1RAHUs+7tw75vk6EF1YnBDlKa+U3vPodqqKcXT3IY9m5G6UfE3r0YgxbQL6PT0h9Ldo8CMpnVJh8OrOkWMPMXUPRMO3kyJuo3VLfjuHFVLzcmrz8i9dVL2g0Qd15G" +
+                    "OwBcL6e+LaHoVsC2b+U+ormNB5btoySDFlp/R9XZAeWN/vxMXpESKL+9Rw4j3ZjHFahRC6R3ls2MxHeDjOkzwWC9Xq8HK6pODcjydq3lV4jvQGT8HhnfdL53roeW/VhOtysf2GXA08r" +
+                    "eFqzGSimlCqrvBoBi2ZubXyBbIIvDd0jRK40xuh+TDCyQ9C2mn45KUj8dOqLR6btfEKgfl18jXQ0sFs3VW2S5AGAzFXOtQGZ9i8zm9w47mC2gulaAyAlpBdhMv0YeBJqry3r5BjF32f" +
+                    "EedysO14unyWJgYfdtBSw6ClDdx6f5qDwh+Xi5XfSyr5EQOHhelL1BqvC4G7LPoQy3hYtaqJ81UGwbgCbahoVgtg6QLNzu6q8PvquBB8+7d4O3B/+bqvAJmQL6wvOudHA25EIB2Xyxm" +
+                    "GdV51zI9wYkUUqpxE3OhSyA8tLzPO9buTsXkr2W48DcnQe5acENj8jILc6D/ACyyyNymaWX50CuNPD8UrVCefzdiLm+3GgRkSaZeZ7nTZJa2tT3FED+6WuCea20kqpG3s9+8vtdekPf" +
+                    "933fH994nud1x77v+52eAQiwxuKMAdPgwEljJdS1drTiGoEkczYqW9e0gqNtXKDbFoszx/kj0vifNBJXCQCBzPNnu0r2RRWlyb7WB11s6nWZZRt21XOqoIyMbPLqKcsyeXabTP8oy4Sg" +
+                    "XaR6m6qfLZFZD3vv43Z22qdANigdiE52RsIqVnWdrnQkea50lAfJRkCHRWRrRZ5LWCYQSJXy3K7JwmQjr82dfAj+jiSlC2UbyNqFOpQ816tMK3HQio4jU8cUmd3oHRJIFcuqDShjc" +
+                    "f+kg4xFkZlYmkIO+5osIzkcTK7KSiInyS6DfLd3eq9zXKRi0l1VKLdXShQk++zP7ur/t8hf0DV5hRKVhaoAAAAASUVORK5CYII=";
+            }
+        }
         public static string SaxasImageBase64
         {
             // return image in form base64: "data:image/png;base64,"
