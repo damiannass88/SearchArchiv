@@ -2,16 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace SearchArchiv.Views
 {
@@ -74,7 +65,8 @@ namespace SearchArchiv.Views
                 {
                     Name = item.Name,
                     Path = item.Path,
-                    Structured = item.Structured
+                    Structured = item.Structured,
+                    PriorityColor = item.PriorityColor
                 });
             }
 
@@ -85,7 +77,8 @@ namespace SearchArchiv.Views
                 {
                     Name = NamePath_TextBox_Add.Text,
                     Path = Path_TextBox_Add.Text,
-                    Structured = Convert.ToBoolean(PathStructured_TextBox_Add.Text)
+                    Structured = Convert.ToBoolean(PathStructured_TextBox_Add.Text),
+                    PriorityColor = PathPrioColor_TextBox_Add.Text,
                 });
             }
             if (NewListPaths.Any())

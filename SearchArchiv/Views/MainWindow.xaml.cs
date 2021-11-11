@@ -30,7 +30,7 @@ namespace SearchArchiv.Views
             LoadImages();
         }
 
-        private bool IsWindowFocused = true;
+        private bool IsWindowFocused = true; 
 
         private void LoadImages()
         {
@@ -77,13 +77,28 @@ namespace SearchArchiv.Views
         private void ClearInput_Click(object sender, RoutedEventArgs e)
         {
             // Clear Input textbox.
+            ID_Input.Text = "";
         }
 
         private void Search_ID_Click(object sender, RoutedEventArgs e)
-        { 
+        {
+            // Start Method StartSearching().
+            StartSearching();
+        }
+        private void StartSearching()
+        {
             // Start searching ID number.
+            var SKey = ID_Input.Text.Trim().ToString();
+
+            if (SKey == "")
+            {
+                MainItemsControl.ItemsSource = null;
+                ItemsControl_OldVersionIDs.ItemsSource = null;
+                return;
+            }
+
             SearchingClass searchingClass = new SearchingClass();
-          var ResultsDates = searchingClass.StartSearch(ID_Input.Text.Trim().ToString()); 
+            var ResultsDates = searchingClass.StartSearch(SKey);
             MainItemsControl.ItemsSource = ResultsDates;
         }
  
@@ -161,5 +176,230 @@ namespace SearchArchiv.Views
             }
         }
 
+        private void IconBtn_Loupe_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void IconBtn_3d_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void IconBtn_SaveDXF_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var SenderBtn = sender as System.Windows.Controls.Button;
+                var SenderBtn_DXF_Content = ((SearchArchiv.Classes.SearchingClass.IDsDates)((System.Windows.FrameworkElement)SenderBtn.Content).DataContext).PathToDXF;
+                if (SenderBtn_DXF_Content == null)
+                    return;
+                string SaveName = SenderBtn_DXF_Content.Remove(0, SenderBtn_DXF_Content.LastIndexOf("\\") + 1);
+
+                string SavePath_PDF_Name = string.Empty;
+
+                System.Windows.Forms.SaveFileDialog saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+                saveFileDialog1.Title = "Save DXF";
+                saveFileDialog1.DefaultExt = "dxf";
+                saveFileDialog1.FileName = SaveName;
+                saveFileDialog1.Filter = "DXF files (*.dxf)|*.dxf|All files (*.*)|*.*";
+                saveFileDialog1.FilterIndex = 1;
+                saveFileDialog1.OverwritePrompt = true;
+                saveFileDialog1.RestoreDirectory = true;
+                if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    string newDirectory = saveFileDialog1.FileName;
+                    System.IO.File.Copy(SenderBtn_DXF_Content, newDirectory, true);
+                };
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen." +
+                    " \n  -Bitte verwenden Sie eine andere Sammlung. \n\nSearchArchiv Fehler-Hinweis: (F5) " +
+                    "\n\nError Message: \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+            }
+        }
+
+        private void IconBtn_SavePDF_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var SenderBtn = sender as System.Windows.Controls.Button;
+                var SenderBtn_PDF_Content = ((SearchArchiv.Classes.SearchingClass.IDsDates)((System.Windows.FrameworkElement)SenderBtn.Content).DataContext).PathToPDF;
+                if (SenderBtn_PDF_Content == null)
+                    return;
+                string SaveName = SenderBtn_PDF_Content.Remove(0, SenderBtn_PDF_Content.LastIndexOf("\\") + 1);
+
+                string SavePath_PDF_Name = string.Empty;
+
+                System.Windows.Forms.SaveFileDialog saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+                saveFileDialog1.Title = "Save PDF";
+                saveFileDialog1.DefaultExt = "pdf";
+                saveFileDialog1.FileName = SaveName;
+                saveFileDialog1.Filter = "PDF files (*.pdf)|*.pdf|All files (*.*)|*.*";
+                saveFileDialog1.FilterIndex = 1;
+                saveFileDialog1.OverwritePrompt = true;
+                saveFileDialog1.RestoreDirectory = true;
+                if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    string newDirectory = saveFileDialog1.FileName;
+                    System.IO.File.Copy(SenderBtn_PDF_Content, newDirectory, true);
+                };
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n " +
+                    " -Bitte verwenden Sie eine andere Sammlung. \n\nSearchArchiv Fehler-Hinweis: (F6)" +
+                    " \n\nError Message: \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+            }
+        }
+
+        private void IconBtn_OpenDOC_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var SenderBtn = sender as System.Windows.Controls.Button;
+                var SenderBtn_DOC_Content = ((SearchArchiv.Classes.SearchingClass.IDsDates)((System.Windows.FrameworkElement)SenderBtn.Content).DataContext).PathToDOC;
+                if (SenderBtn_DOC_Content == null)
+                    return;
+
+                System.Diagnostics.Process.Start(SenderBtn_DOC_Content);
+
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung.\n\n" +
+                    "Bitte überprüfen Sie OFFICE und die Dateiendung, der DOC/DOCX-Datei. \n\n" +
+                    " \n\nSearchArchiv Fehler-Hinweis: (F7) \n\nError Message:" +
+                    " \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+            }
+        }
+
+        private void IconBtn_OpenFolder_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var SenderBtn = sender as System.Windows.Controls.Button;
+                var SenderBtn_PathToFolder_Content = ((SearchArchiv.Classes.SearchingClass.IDsDates)((System.Windows.FrameworkElement)SenderBtn.Content).DataContext).PathToFolder;
+                if (SenderBtn_PathToFolder_Content == null)
+                    return;
+
+                System.Diagnostics.Process.Start(SenderBtn_PathToFolder_Content);
+
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung." +
+                    " \n\nSearchArchiv Fehler-Hinweis: (F10) \n\nError Message:" +
+                    " \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+            }
+        }
+
+        private void IconBtn_PrintPDF_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var SenderBtn = sender as System.Windows.Controls.Button;
+                var SenderBtn_PDF_Content = ((SearchArchiv.Classes.SearchingClass.IDsDates)((System.Windows.FrameworkElement)SenderBtn.Content).DataContext).PathToPDF;
+                if (SenderBtn_PDF_Content == null)
+                    return;
+
+                SendtoPrint((string)SenderBtn_PDF_Content);
+
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung." +
+                    " \n\nSearchArchiv Fehler-Hinweis: (F11) \n\nError Message:" +
+                    " \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+            } 
+        }
+        private static bool ProcessIsRunning()
+        {
+            return (System.Diagnostics.Process.GetProcessesByName("AcroRd32").Length == 0);
+        }
+        private static void SendtoPrint(string Printfile)
+        {
+            try
+            {
+                if (ProcessIsRunning())
+                {
+                    System.Diagnostics.Process myProcess = new System.Diagnostics.Process();
+                    myProcess.StartInfo.FileName = "acroRd32.exe";
+                    myProcess.StartInfo.Arguments = "/h";
+                    myProcess.Start();
+                    int milliseconds = 1000;
+                    System.Threading.Thread.Sleep(milliseconds);
+                }
+
+                System.Diagnostics.Process p = new System.Diagnostics.Process
+                {
+                    StartInfo = new System.Diagnostics.ProcessStartInfo()
+                    {
+                        CreateNoWindow = true,
+                        Verb = "print",
+                        FileName = Printfile
+                    }
+                };
+                p.Start();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung. \n\n" +
+                    "Bitte überprüfen Sie Adobe und die Dateiendung, der PDF-Datei. \n\n" +
+                    " \n\nSearchArchiv Fehler-Hinweis: (F12) \n\nError Message:" +
+                    " \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+            }
+        }
+        private void IconBtn_OpenDXF_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var SenderBtn = sender as System.Windows.Controls.Button;
+                var SenderBtn_DXF_Content = ((SearchArchiv.Classes.SearchingClass.IDsDates)((System.Windows.FrameworkElement)SenderBtn.Content).DataContext).PathToDXF;
+                if (SenderBtn_DXF_Content == null)
+                    return;
+
+                System.Diagnostics.Process.Start(SenderBtn_DXF_Content);
+
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung.\n\n" +
+                    "Bitte überprüfen Sie OPENING PROGRAMM und die Dateiendung, der DXF-Datei. \n\n" +
+                    " \n\nSearchArchiv Fehler-Hinweis: (F8) \n\nError Message:" +
+                    " \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+            }
+        }
+
+        private void OpenBtn_OpenPDF_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var SenderBtn = sender as System.Windows.Controls.Button;
+                var SenderBtn_PDF_Content = ((SearchArchiv.Classes.SearchingClass.IDsDates)((System.Windows.FrameworkElement)SenderBtn.Content).DataContext).PathToPDF;
+                if (SenderBtn_PDF_Content == null)
+                    return;
+
+                System.Diagnostics.Process.Start(SenderBtn_PDF_Content);
+
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung.\n\n" +
+                    "Bitte überprüfen Sie Adobe und die Dateiendung, der PDF-Datei. \n\n" +
+                    " \n\nSearchArchiv Fehler-Hinweis: (F9) \n\nError Message:" +
+                    " \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+            }
+        }
+
+        private void ID_Input_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                StartSearching();
+                return;
+            }
+        }
     }
 }

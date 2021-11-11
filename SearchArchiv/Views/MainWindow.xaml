@@ -9,7 +9,7 @@
         WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
         WindowStyle="None" 
-        Title="SearchArchiv" Height="520" Width="410" MouseDown="Window_MouseDown"
+        Title="SearchArchiv" Height="600" Width="420" MouseDown="Window_MouseDown"
         Icon="SearchArchiv.ico"
         Deactivated="MainWindow_Name_Deactivated" 
         Activated="MainWindow_Name_Activated">
@@ -31,10 +31,10 @@
             <Grid.Resources>
                 <DataTemplate x:Key="ItemsPanelTemplate">
                     <StackPanel  Background="WhiteSmoke" 
-                            Width="{Binding ElementName=MainItemsControl,Path=ActualWidth}" 
-                                 Margin="0,0,0,4">
+                            Width="360" 
+                                 Margin="4,3,4,3">
 
-                        <Border BorderBrush="#FF007ACC"
+                        <Border BorderBrush="#FF005E9C"
                             BorderThickness="2"
                             Margin="3" >
                             <Grid Margin="0" >
@@ -79,17 +79,10 @@
                                     </TextBlock>
                                     <TextBlock FontSize="14"
                                            Text="{Binding NameSettPath}"
-                                            Foreground="White"
+                                            Foreground="White" 
                                                MinWidth="85"
                                                Padding="3,0,0,0"
-                                           Background="#FF00497A">
-                                        <TextBlock.BitmapEffect>
-                                            <DropShadowBitmapEffect Color="White"
-                                                    Softness=".1" 
-                                                    ShadowDepth="1" 
-                                                    Direction="135" 
-                                                    Opacity="1"/>
-                                        </TextBlock.BitmapEffect>
+                                           Background="{Binding PriorityColor}"> 
                                     </TextBlock>
                                 </StackPanel>
 
@@ -104,9 +97,9 @@
                                     <TextBlock  Text="Artikelnummer:" 
                                             FontSize="14"
                                                 MinWidth="120"
-                                            Foreground="White"
+                                            Foreground="Snow"
                                                 TextAlignment="Center"
-                                            Background="#FF747474">
+                                            Background="DimGray">
                                         <TextBlock.BitmapEffect>
                                             <DropShadowBitmapEffect Color="White"
                                                     Softness=".1" 
@@ -122,7 +115,7 @@
                                          FontWeight="Bold"
                                              MinWidth="120"
                                              Padding="5,0,0,0"
-                                           Background="#FF747474"/>
+                                           Background="DimGray"/>
                                 </StackPanel>
 
                                 <StackPanel Grid.Column="0"
@@ -141,12 +134,13 @@
                                         </Style>
                                     </StackPanel.Style>
                                     <Border BorderBrush="Gray" 
-                                            BorderThickness="1">
-                                    <TextBlock Text="Alt Stand: "
+                                            BorderThickness="1"
+                                            Height="{Binding ElementName=Dropdown_OldVerions, Path=ActualHeight}">
+                                        <TextBlock Text="Alte Ver.  "
                                                Padding="5,2,0,0"
-                                               Foreground="#FF747474"
+                                               Foreground="#FF5F5E5E"
                                                FontSize="12" 
-                                               TextAlignment="Center"
+                                               TextAlignment="Center" 
                                                Background="#FFEAEAEA"/>
                                     </Border>
                                     <ComboBox Name="Dropdown_OldVerions"
@@ -176,20 +170,481 @@
                                        Grid.ColumnSpan="3"
                                        Grid.Row="0"
                                        Grid.RowSpan="3"
-                                       VerticalAlignment="Center">
+                                       VerticalAlignment="Center"
+                                           HorizontalAlignment="Center">
 
-                                    <Button Width="27" Height="27" Margin="1" Content="CC"/>
-                                    <Button Width="27" Height="27" Margin="1" Content="CC"/>
-                                    <Button Width="27" Height="27" Margin="1" Content="CC"/>
-                                    <Button Width="27" Height="27" Margin="1" Content="CC"/>
-                                    <Button Width="27" Height="27" Margin="1" Content="CC"/>
-                                    <Button Width="27" Height="27" Margin="1" Content="CC"/>
-                                    <Button Width="27" Height="27" Margin="1" Content="CC"/>
-                                    <Button Width="27" Height="27" Margin="1" Content="CC"/>
+                                    <Button x:Name="OpenBtn_OpenPDF" 
+                                            Margin="1"
+                                            BorderThickness="0"
+                                            Width="34" 
+                                            Height="28"
+                                            ToolTip="PDF-Datei Öffnen."
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Background="Transparent" Click="OpenBtn_OpenPDF_Click">
+                                        <Button.Content>
+                                            <Image>
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Source" Value="/SearchArchiv;component/Icons/Icon_OpenPDF.png"/>
+                                                        <Setter Property="Opacity" Value="1"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding PathToPDF}" Value="{x:Null}">
+                                                                <Setter Property="Source" Value="/SearchArchiv;component/Icons/Icon_OpenPDF_bw.png"/>
+                                                                <Setter Property="Opacity" Value="0.6"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
+                                        </Button.Content>
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Cursor" Value="Hand"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding PathToPDF}" Value="{x:Null}">
+                                                        <Setter Property="Cursor" Value="Arrow"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                                    <Border x:Name="Border">
+                                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter Property="Background" Value="Transparent" TargetName="Border" />
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+ 
+                                    <Button x:Name="IconBtn_SavePDF" 
+                                            Margin="1"
+                                            BorderThickness="0"
+                                            Width="34" 
+                                            Height="28" 
+                                            ToolTip="Speichern in anderen Ordner, PDF-Datei."
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Background="Transparent" Click="IconBtn_SavePDF_Click">
+                                        <Button.Content>
+                                            <Image>
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Source" Value="/SearchArchiv;component/Icons/Icon_SavePDF.png"/>
+                                                        <Setter Property="Opacity" Value="1"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding PathToPDF}" Value="{x:Null}">
+                                                                <Setter Property="Source" Value="/SearchArchiv;component/Icons/Icon_SavePDF_bw.png"/>
+                                                                <Setter Property="Opacity" Value="0.6"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
+                                        </Button.Content>
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Cursor" Value="Hand"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding PathToPDF}" Value="{x:Null}">
+                                                        <Setter Property="Cursor" Value="Arrow"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                                    <Border x:Name="Border">
+                                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter Property="Background" Value="Transparent" TargetName="Border" />
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                    
+                                    <Button x:Name="IconBtn_Loupe" 
+                                            Margin="1"
+                                            BorderThickness="0"
+                                            Width="34" 
+                                            Height="28"  
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Background="Transparent" Click="IconBtn_Loupe_Click">
+                                        <Button.ToolTip>
+                                            <ToolTip x:Name="ToolTipTIF"
+                                            OverridesDefaultStyle="True"
+                                                      HasDropShadow="True">
+                                                <ToolTip.Template>
+                                                    <ControlTemplate TargetType="ToolTip">
+                                                        <Image Source="{Binding PathToTIF, TargetNullValue={x:Null}}"
+                                                               RenderOptions.BitmapScalingMode="Fant"
+                                                               SnapsToDevicePixels="True"/>
+                                                    </ControlTemplate>
+                                                </ToolTip.Template>
+                                            </ToolTip>
+                                        </Button.ToolTip>
+                                        <Button.Content>
+                                            <Image>
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Source" Value="/SearchArchiv;component/Icons/Icon_Loupe.png"/>
+                                                        <Setter Property="Opacity" Value="1"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding PathToTIF}" Value="{x:Null}">
+                                                                <Setter Property="Source" Value="/SearchArchiv;component/Icons/Icon_Loupe_bw.png"/>
+                                                                <Setter Property="Opacity" Value="0.6"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
+                                        </Button.Content>
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Cursor" Value="Hand"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding PathToTIF}" Value="{x:Null}">
+                                                        <Setter Property="Cursor" Value="Arrow"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                                    <Border x:Name="Border">
+                                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter Property="Background" Value="Transparent" TargetName="Border" />
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
 
-                                </WrapPanel>
+                                    <Button x:Name="IconBtn_OpenDXF" 
+                                            Margin="1"
+                                            BorderThickness="0"
+                                            Width="34" 
+                                            Height="28" 
+                                            ToolTip="DXF-Datei Öffnen."
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Background="Transparent" Click="IconBtn_OpenDXF_Click">
+                                        <Button.Content>
+                                            <Image>
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Source" Value="/SearchArchiv;component/Icons/Icon_OpenDXF.png"/>
+                                                        <Setter Property="Opacity" Value="1"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding PathToDXF}" Value="{x:Null}">
+                                                                <Setter Property="Source" Value="/SearchArchiv;component/Icons/Icon_OpenDXF_bw.png"/>
+                                                                <Setter Property="Opacity" Value="0.6"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
+                                        </Button.Content>
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Cursor" Value="Hand"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding PathToDXF}" Value="{x:Null}">
+                                                        <Setter Property="Cursor" Value="Arrow"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                                    <Border x:Name="Border">
+                                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter Property="Background" Value="Transparent" TargetName="Border" />
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                    
+                                    <Button x:Name="IconBtn_SaveDXF" 
+                                            Margin="1"
+                                            BorderThickness="0"
+                                            Width="34" 
+                                            Height="28" 
+                                            ToolTip="Speichern in anderen Ordner, DXF-Datei."
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Background="Transparent" Click="IconBtn_SaveDXF_Click">
+                                        <Button.Content>
+                                            <Image>
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Source" Value="/SearchArchiv;component/Icons/Icon_SaveDXF.png"/>
+                                                        <Setter Property="Opacity" Value="1"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding PathToDXF}" Value="{x:Null}">
+                                                                <Setter Property="Source" Value="/SearchArchiv;component/Icons/Icon_SaveDXF_bw.png"/>
+                                                                <Setter Property="Opacity" Value="0.6"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
+                                        </Button.Content>
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Cursor" Value="Hand"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding PathToDXF}" Value="{x:Null}">
+                                                        <Setter Property="Cursor" Value="Arrow"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                                    <Border x:Name="Border">
+                                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter Property="Background" Value="Transparent" TargetName="Border" />
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                    
+                                    <Button x:Name="IconBtn_PrintPDF" 
+                                            Margin="1"
+                                            BorderThickness="0"
+                                            Width="34" 
+                                            Height="28"
+                                            ToolTip="PDF-Datei sofort ausdrucken."
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Background="Transparent" Click="IconBtn_PrintPDF_Click">
+                                        <Button.Content>
+                                            <Image>
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Source" Value="/SearchArchiv;component/Icons/Icon_Print.png"/>
+                                                        <Setter Property="Opacity" Value="1"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding PathToPDF}" Value="{x:Null}">
+                                                                <Setter Property="Source" Value="/SearchArchiv;component/Icons/Icon_Print_bw.png"/>
+                                                                <Setter Property="Opacity" Value="0.6"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
+                                        </Button.Content>
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Cursor" Value="Hand"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding PathToPDF}" Value="{x:Null}">
+                                                        <Setter Property="Cursor" Value="Arrow"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                                    <Border x:Name="Border">
+                                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter Property="Background" Value="Transparent" TargetName="Border" />
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
 
+                                    <Button x:Name="IconBtn_OpenFolder" 
+                                            Margin="1"
+                                            BorderThickness="0"
+                                            Width="34" 
+                                            Height="28"
+                                            ToolTip="Ordner mit ID-Nummer öffnen."
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Background="Transparent" Click="IconBtn_OpenFolder_Click">
+                                        <Button.Content>
+                                            <Image>
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Source" Value="/SearchArchiv;component/Icons/Icon_Folder.png"/>
+                                                        <Setter Property="Opacity" Value="1"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding PathToFolder}" Value="{x:Null}">
+                                                                <Setter Property="Source" Value="/SearchArchiv;component/Icons/Icon_Folder_bw.png"/>
+                                                                <Setter Property="Opacity" Value="0.6"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
+                                        </Button.Content>
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Cursor" Value="Hand"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding PathToFolder}" Value="{x:Null}">
+                                                        <Setter Property="Cursor" Value="Arrow"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                                    <Border x:Name="Border">
+                                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter Property="Background" Value="Transparent" TargetName="Border" />
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
 
+                                    <Button x:Name="IconBtn_OpenDOC" 
+                                            Margin="1"
+                                            BorderThickness="0"
+                                            Width="34" 
+                                            Height="28" 
+                                            ToolTip="DOC|DOCX-Datei Öffnen."
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Background="Transparent" Click="IconBtn_OpenDOC_Click">
+                                        <Button.Content>
+                                            <Image>
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Source" Value="/SearchArchiv;component/Icons/Icon_OpenDOC.png"/>
+                                                        <Setter Property="Opacity" Value="1"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding PathToDOC}" Value="{x:Null}">
+                                                                <Setter Property="Source" Value="/SearchArchiv;component/Icons/Icon_OpenDOC_bw.png"/>
+                                                                <Setter Property="Opacity" Value="0.6"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
+                                        </Button.Content>
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Cursor" Value="Hand"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding PathToDOC}" Value="{x:Null}">
+                                                        <Setter Property="Cursor" Value="Arrow"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                                    <Border x:Name="Border">
+                                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter Property="Background" Value="Transparent" TargetName="Border" />
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+ 
+                                    <Button x:Name="IconBtn_3d" 
+                                            Margin="1"
+                                            BorderThickness="0"
+                                            Width="34" 
+                                            Height="28" 
+                                            ToolTip="Quick Preview 3D-Datei."
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Background="Transparent" Click="IconBtn_3d_Click">
+                                        <Button.Content>
+                                            <Image>
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Source" Value="/SearchArchiv;component/Icons/Icon_3D.png"/>
+                                                        <Setter Property="Opacity" Value="1"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding PathToJT}" Value="{x:Null}">
+                                                                <Setter Property="Source" Value="/SearchArchiv;component/Icons/Icon_3D_bw.png"/>
+                                                                <Setter Property="Opacity" Value="0.6"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
+                                        </Button.Content>
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Cursor" Value="Hand"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding PathToJT}" Value="{x:Null}">
+                                                         <Setter Property="Cursor" Value="Arrow"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                                    <Border x:Name="Border">
+                                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter Property="Background" Value="Transparent" TargetName="Border" />
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style> 
+                                        </Button.Style>
+                                    </Button>
+
+                                </WrapPanel> 
                             </Grid>
                         </Border>
                     </StackPanel>
@@ -200,8 +655,8 @@
                 <RowDefinition Height="5" Tag="Margin" />
                 <RowDefinition Height="30" Tag="Title" /> 
                 <RowDefinition Height="50" Tag="Input_Area" />  
-                <RowDefinition Height="225" MinHeight="180" Tag="Table1" />
-                <RowDefinition Height="125" Tag="Table2" />
+                <RowDefinition Height="245" MinHeight="180" Tag="Table1" />
+                <RowDefinition Height="1*" MinHeight="10" Tag="Table2" />
                 <RowDefinition Height="40" Tag="Footer" />
                 <RowDefinition Height="5" Tag="Margin" />
             </Grid.RowDefinitions>
@@ -297,7 +752,7 @@
                          VerticalAlignment="Center"
                          HorizontalAlignment="Center"
                          BorderBrush="White"
-                         BorderThickness="0"> 
+                         BorderThickness="0" KeyDown="ID_Input_KeyDown"> 
                     </TextBox>
                 </Border>
                 <Button x:Name="ClearInput"
@@ -337,15 +792,15 @@
                     </Button.BitmapEffect>
                 </Button>
             </StackPanel>
-
-            <ScrollViewer  Grid.Column="1"
-                           Grid.Row="3" 
+            <Border BorderThickness="0,0,0,2" Grid.Column="1"
+                           Grid.Row="3"  BorderBrush="White">
+                <ScrollViewer  
                            ScrollViewer.CanContentScroll="True"
                            VerticalScrollBarVisibility="Visible">
                 
+                    
                 <ItemsControl x:Name="MainItemsControl"  
-                              ItemTemplate="{StaticResource ItemsPanelTemplate}"
-                               >
+                              ItemTemplate="{StaticResource ItemsPanelTemplate}">
                     <ItemsControl.Background>
                         <LinearGradientBrush StartPoint="1,0" EndPoint="0,1" 
                                  MappingMode="RelativeToBoundingBox">
@@ -354,23 +809,34 @@
                         </LinearGradientBrush>
                     </ItemsControl.Background>
                 </ItemsControl>
+                
             </ScrollViewer>
-
+            </Border>
             <StackPanel x:Name="StackPanel_Width" Grid.Column="1" Grid.Row="4"
                         VerticalAlignment="Top" 
-                        HorizontalAlignment="Left"
+                        HorizontalAlignment="Center"
                         Orientation="Vertical"
                         Margin="0,10,0,0">
                 
                  <TextBlock Text="Vorherige Versionen : "
                            Padding="5,1,0,2"
                            FontSize="15"
-                            Margin="10,0,0,5"
+                            Margin="8,0,0,5"
                             TextAlignment="Center" 
                             VerticalAlignment="Top" 
                         HorizontalAlignment="Left"
                            Background="#FF4F4F4F"
                             Foreground="#FFF1F1F1">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=ItemsControl_OldVersionIDs, Path=ItemsSource}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
                     <TextBlock.BitmapEffect>
                         <DropShadowBitmapEffect Color="#FF4F4F4F"
                                                     Softness=".1" 
@@ -380,7 +846,7 @@
                     </TextBlock.BitmapEffect>
                 </TextBlock>
 
-                <ItemsControl x:Name="ItemsControl_OldVersionIDs" 
+                <ItemsControl x:Name="ItemsControl_OldVersionIDs"
                               ItemTemplate="{StaticResource ItemsPanelTemplate}">
                 </ItemsControl>
  
