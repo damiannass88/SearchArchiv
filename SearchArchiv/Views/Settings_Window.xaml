@@ -153,6 +153,24 @@
                                              Grid.Column="1"
                                              Grid.ColumnSpan="3"/>
                                 </Grid>
+                                <Grid Margin="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition SharedSizeGroup="A"/>
+                                        <ColumnDefinition SharedSizeGroup="A"/>
+                                        <ColumnDefinition SharedSizeGroup="A"/>
+                                        <ColumnDefinition SharedSizeGroup="A"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="Prio Farbe:" Margin="5,0,0,0"
+                                           ToolTip="Priorität Farbe. Geben Sie Color Name, zb. Green, Gold, Red. Achtung! Nur offizielle farbe Name. Google: 'WPF COLORS'."/>
+                                    <TextBox Background="Transparent"
+                                             VerticalAlignment="Center" 
+                                             BorderThickness="0" 
+                                             x:Name="PathPrioColor_TextBox"
+                                             Text="{Binding PriorityColor}"
+                                             ToolTip="{Binding PriorityColor}"
+                                             Grid.Column="1"
+                                             Grid.ColumnSpan="3"/>
+                                </Grid>
                                 <Line Stretch="Fill" Stroke="#FF1D174A" 
                   StrokeThickness="1" X1="1" Margin="0,0,0,1"
                   VerticalAlignment="Center"  
@@ -231,6 +249,22 @@
                         <TextBox VerticalAlignment="Center" 
                                              BorderThickness="0" 
                                              x:Name="PathStructured_TextBox_Add"
+                                             Text=""
+                                             Grid.Column="1"
+                                             Grid.ColumnSpan="3"/>
+                    </Grid>
+                    <Grid Margin="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="A"/>
+                            <ColumnDefinition SharedSizeGroup="A"/>
+                            <ColumnDefinition SharedSizeGroup="A"/>
+                            <ColumnDefinition SharedSizeGroup="A"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Prio Farbe:" Margin="5,0,0,0"
+                                           ToolTip="Priorität Farbe. Geben Sie Color Name, zb. Green, Gold, Red. Achtung! Nur offizielle farbe Name. Google: 'WPF COLORS'."/>
+                        <TextBox VerticalAlignment="Center" 
+                                             BorderThickness="0" 
+                                             x:Name="PathPrioColor_TextBox_Add"
                                              Text=""
                                              Grid.Column="1"
                                              Grid.ColumnSpan="3"/>
