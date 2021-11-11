@@ -176,14 +176,27 @@ namespace SearchArchiv.Views
             }
         }
 
-        private void IconBtn_Loupe_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void IconBtn_3d_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                var SenderBtn = sender as System.Windows.Controls.Button;
+                var SenderBtn_JT_Content = ((SearchArchiv.Classes.SearchingClass.IDsDates)((System.Windows.FrameworkElement)SenderBtn.Content).DataContext).PathToJT;
+                if (SenderBtn_JT_Content == null)
+                    return;
 
+                System.Diagnostics.Process.Start(SenderBtn_JT_Content);
+
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung.\n\n" +
+                    "Bitte überprüfen Sie Adobe und die Dateiendung, der JT-Datei. \n\n" +
+                    "Jupiter Tessellation(JT) ist ein leichtes 3D-Visualisierungsdateiformat für PLM. \n " +
+                    "Es können geöffnet werden in JT2Go Desktop App." +
+                    " \n\nSearchArchiv Fehler-Hinweis: (F9) \n\nError Message:" +
+                    " \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+            }
         }
 
         private void IconBtn_SaveDXF_Click(object sender, RoutedEventArgs e)
@@ -399,6 +412,27 @@ namespace SearchArchiv.Views
             {
                 StartSearching();
                 return;
+            }
+        }
+
+        private void IconBtn_Loupe_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                var SenderBtn = sender as System.Windows.Controls.Button;
+                var SenderBtn_TIF_Content = ((SearchArchiv.Classes.SearchingClass.IDsDates)((System.Windows.FrameworkElement)SenderBtn.Content).DataContext).PathToTIF;
+                if (SenderBtn_TIF_Content == null)
+                    return;
+
+                System.Diagnostics.Process.Start(SenderBtn_TIF_Content);
+
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung.\n\n" +
+                    "Bitte überprüfen Sie Foto-Software und die Dateiendung, der TIF-Datei. \n\n" +
+                    " \n\nSearchArchiv Fehler-Hinweis: (F7) \n\nError Message:" +
+                    " \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
             }
         }
     }
