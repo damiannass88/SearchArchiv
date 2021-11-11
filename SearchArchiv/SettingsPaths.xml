@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Paths>
-	<Path name="SerieH" path="G:\Ftest\serie" structured="true" />
-	<Path name="DXFV" path="G:\Ftest\V" structured="false" />
+	<Path Name="SerieH" Path="G:\Ftest\serie" Structured="true" PriorityColor="Green"/>
+	<Path Name="DXFV" Path="G:\Ftest\V" Structured="false" PriorityColor="Gold"/>
+	<Path Name="QS" Path="G:\Ftest\PruefQS" Structured="true" PriorityColor="Red"/>
 </Paths>
