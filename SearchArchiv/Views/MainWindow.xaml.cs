@@ -327,23 +327,44 @@ namespace SearchArchiv.Views
                     " \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
             } 
         }
-        private static bool ProcessIsRunning()
+        private static bool ProcessIsRunning_AcroRd32()
         {
             return (System.Diagnostics.Process.GetProcessesByName("AcroRd32").Length == 0);
+        }
+        private static bool ProcessIsRunning_Acrobat()
+        {
+            return (System.Diagnostics.Process.GetProcessesByName("Acrobat").Length == 0);
         }
         private static void SendtoPrint(string Printfile)
         {
             try
             {
-                if (ProcessIsRunning())
+                // Check if PDF Viewer run already. If not, first start then.
+                if (ProcessIsRunning_AcroRd32() & ProcessIsRunning_Acrobat())
                 {
                     System.Diagnostics.Process myProcess = new System.Diagnostics.Process();
                     myProcess.StartInfo.FileName = "acroRd32.exe";
                     myProcess.StartInfo.Arguments = "/h";
-                    myProcess.Start();
+
+                    //Adobe PDF Reader has 2 name for the Process "acroRd32.exe" and "Acrobat.exe", so for versions names is used block Try/catch/finally
+                    try
+                    {
+                        // Try start process name acroRd32.exe
+                        myProcess.Start();
+                    }
+                    catch
+                    { }
+                    finally
+                    {
+                        myProcess.StartInfo.FileName = "Acrobat.exe";
+                        // Try start process name Acrobat.exe, if Exception, than main methode catch Exception with Message.
+                        myProcess.Start();
+                    }
+
                     int milliseconds = 1000;
                     System.Threading.Thread.Sleep(milliseconds);
                 }
+                
 
                 System.Diagnostics.Process p = new System.Diagnostics.Process
                 {
