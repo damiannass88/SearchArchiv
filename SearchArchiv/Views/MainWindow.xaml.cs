@@ -1,82 +1,86 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿// /******************************************************
+//  * MIT License
+//  * Copyright © 2025 Damian Nass
+// 
+//  * Permission is hereby granted, free of charge, to any person obtaining a copy
+//  * of this software to use, copy, modify, merge, publish, and distribute it.
+// 
+//  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+//  * For inquiries, contact: damiannass@nas4.tech
+//  ******************************************************/
+
+using System;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Forms;
-using SearchArchiv.Classes;
+using System.Windows.Input;
+using SearchArchive.Controllers;
+using SearchArchive.Models;
+using Application = System.Windows.Application;
+using Button = System.Windows.Controls.Button;
+using ComboBox = System.Windows.Controls.ComboBox;
+using Cursors = System.Windows.Input.Cursors;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using MessageBox = System.Windows.Forms.MessageBox;
 
-namespace SearchArchiv.Views
+namespace SearchArchive.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    { 
+    {
+        private bool IsWindowFocused = true;
+
         public MainWindow()
         {
             InitializeComponent();
             LoadImages();
         }
 
-        private bool IsWindowFocused = true; 
-
         private void LoadImages()
         {
-            // Methode to Get base64 image string, and set on Image Source.
-            Logo_Firm_image.Source = ImagesClass.MemoringStreamBitmap(Convert.FromBase64String(ImagesClass.SaxasImageBase64));
-            Settings_BtnIcon.Source = ImagesClass.MemoringStreamBitmap(Convert.FromBase64String(ImagesClass.SettingsImageBase64));
-        } 
+            // Method to Get base64 image string, and set on Image Source.
+            Logo_Firm_image.Source =
+                ImagesBase64.MemorizingStreamBitmap(Convert.FromBase64String(ImagesBase64.SaxasImageBase64));
+            Settings_BtnIcon.Source =
+                ImagesBase64.MemorizingStreamBitmap(Convert.FromBase64String(ImagesBase64.SettingsImageBase64));
+        }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            // DragMove Window Methode
-            MainWindow_Name.Cursor = System.Windows.Input.Cursors.Hand;
+            // DragMove Window Method
+            MainWindow_Name.Cursor = Cursors.Hand;
 
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                this.DragMove();
+            if (e.ChangedButton == MouseButton.Left) DragMove();
 
-            }
-
-            if (e.ButtonState == MouseButtonState.Released)
-            {
-                MainWindow_Name.Cursor = System.Windows.Input.Cursors.Arrow;
-            }
+            if (e.ButtonState == MouseButtonState.Released) MainWindow_Name.Cursor = Cursors.Arrow;
         }
 
+        // Go to website adwers.com lang=de
         private void Adwers_footer_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            // Go to website adwers.com
-            System.Diagnostics.Process.Start("https://www.adwers.com/de/");
+            Process.Start("https://www.adwers.com/de/");
         }
 
+        // Close Application.
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
-            // Close Aplication.
-            System.Windows.Application.Current.Shutdown();
+            Application.Current.Shutdown();
         }
 
+        // Minimize Application.
         private void MinimizeBtn_Click(object sender, RoutedEventArgs e)
         {
-            // Minimize Aplication.
-            this.WindowState = WindowState.Minimized;
+            WindowState = WindowState.Minimized;
         }
 
+        // Clear Input textbox.
         private void ClearInput_Click(object sender, RoutedEventArgs e)
         {
-            // Clear Input textbox.
             ID_Input.Text = "";
         }
 
@@ -85,13 +89,14 @@ namespace SearchArchiv.Views
             // Start Method StartSearching().
             StartSearching();
         }
+
         private void StartSearching()
         {
             // Start searching ID number.
-            var SKey = ID_Input.Text.Trim().ToString();
-             
+            var searchIdName = ID_Input.Text.Trim();
+
             //Clear Views if nothing to search.
-            if (SKey == "")
+            if (searchIdName == "")
             {
                 MainItemsControl.ItemsSource = null;
                 ItemsControl_OldVersionIDs.ItemsSource = null;
@@ -102,82 +107,76 @@ namespace SearchArchiv.Views
             if (ItemsControl_OldVersionIDs.ItemsSource != null)
                 ItemsControl_OldVersionIDs.ItemsSource = null;
 
-            SearchingClass searchingClass = new SearchingClass();
-            var ResultsDates = searchingClass.StartSearch(SKey);
-            MainItemsControl.ItemsSource = ResultsDates;
+            var searchingClass = new SearchController();
+            var resultsDates = searchingClass.StartSearch(searchIdName);
+
+            MainItemsControl.ItemsSource = resultsDates;
         }
- 
+
         private void Settings_Btn_Click(object sender, RoutedEventArgs e)
         {
             // Open Settings Window.
-            Settings_Window settings_Window = new Settings_Window();
+            var settingsWindow = new Settings_Window();
 
-            if (settings_Window.ShowDialog() == true)
-            {
-                return;
-            }
+            if (settingsWindow.ShowDialog() == true) return;
         }
 
         private void Info_btn_Click(object sender, RoutedEventArgs e)
         {
             // Create Object Info_Window and Open that window with about infos.
-            Info_Window info_Window = new Info_Window();
+            var infoWindow = new Info_Window();
 
-            if (info_Window.ShowDialog() == true)
-            {
-                return;
-            }
+            if (infoWindow.ShowDialog() == true) return;
         }
 
-        private void GetOldIDFiles(string NameIDsOld, string NameSettPathOld, string PathToFolderOld)
+        private void GetOldIdFiles(string nameIDsOld, string nameSettPathOld, string pathToFolderOld)
         {
-            SearchingClass searchingClass = new SearchingClass();
+            var searchingClass = new SearchController();
 
             // Get files for concrete old ID version Item.
-            var ResultsFiles = searchingClass.GetOldIdItemsFromStructedLevel(NameIDsOld, NameSettPathOld, PathToFolderOld);
+            var resultsFiles =
+                searchingClass.GetOldIdItemsFromStructuredLevel(nameIDsOld, nameSettPathOld, pathToFolderOld);
 
             if (ItemsControl_OldVersionIDs.ItemsSource != null)
                 ItemsControl_OldVersionIDs.ItemsSource = null;
 
-            ItemsControl_OldVersionIDs.ItemsSource = ResultsFiles;
-        } 
+            ItemsControl_OldVersionIDs.ItemsSource = resultsFiles;
+        }
 
         private void MainWindow_Name_Activated(object sender, EventArgs e)
         {
             if (IsWindowFocused)
             {
-
                 ID_Input.SelectionStart = 0;
-                ID_Input.SelectionLength = ID_Input.Text.Length; 
-                ID_Input.Focus(); 
+                ID_Input.SelectionLength = ID_Input.Text.Length;
+                ID_Input.Focus();
                 IsWindowFocused = false;
-            } 
+            }
         }
 
         private void MainWindow_Name_Deactivated(object sender, EventArgs e)
-        { 
+        {
             IsWindowFocused = true;
         }
-        
-        private void Dropdown_OldVerions_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+        private void Dropdown_OldVersions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
-                var SenderComboBoxItem = sender as System.Windows.Controls.ComboBox;
-                if (SenderComboBoxItem.Items.Count == 0)
+                var senderComboBoxItem = sender as ComboBox;
+                if (senderComboBoxItem.Items.Count == 0)
                     return;
-                var NameIDsOld = ((SearchArchiv.Classes.SearchingClass.OldVerDates)SenderComboBoxItem.SelectedValue).NameIDsOld;
-                var NameSettPathOld = ((SearchArchiv.Classes.SearchingClass.OldVerDates)SenderComboBoxItem.SelectedValue).NameSettPathOld;
-                var PathToFolderOld = ((SearchArchiv.Classes.SearchingClass.OldVerDates)SenderComboBoxItem.SelectedValue).PathToFolderOld;
+                var nameIDsOld = ((OldVersionData)senderComboBoxItem.SelectedValue).NameIDsOld;
+                var nameSettPathOld = ((OldVersionData)senderComboBoxItem.SelectedValue).NameSettPathOld;
+                var pathToFolderOld = ((OldVersionData)senderComboBoxItem.SelectedValue).PathToFolderOld;
 
-                GetOldIDFiles(NameIDsOld, NameSettPathOld, PathToFolderOld);
-
+                GetOldIdFiles(nameIDsOld, nameSettPathOld, pathToFolderOld);
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n" +
-                    "  -Bitte verwenden Sie eine andere ID Numer. \n\nSearchArchiv Fehler-Hinweis: (F4) \n\nError Message: \n"
-                    + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n" +
+                                "  -Bitte verwenden Sie eine andere ID Numer. \n\nSearchArchiv Fehler-Hinweis: (F4) \n\nError Message: \n"
+                                + ex.Message, "INFORMATION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -185,22 +184,23 @@ namespace SearchArchiv.Views
         {
             try
             {
-                var SenderBtn = sender as System.Windows.Controls.Button;
-                var SenderBtn_JT_Content = ((SearchArchiv.Classes.SearchingClass.IDsDates)((System.Windows.FrameworkElement)SenderBtn.Content).DataContext).PathToJT;
-                if (SenderBtn_JT_Content == null)
+                var senderBtn = sender as Button;
+                var senderBtnJtContent =
+                    ((OutcomeInfosData)((FrameworkElement)senderBtn.Content).DataContext).PathToJT;
+                if (senderBtnJtContent == null)
                     return;
 
-                System.Diagnostics.Process.Start(SenderBtn_JT_Content);
-
+                Process.Start(senderBtnJtContent);
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung.\n\n" +
+                MessageBox.Show(
+                    "Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung.\n\n" +
                     "Bitte überprüfen Sie Adobe und die Dateiendung, der JT-Datei. \n\n" +
                     "Jupiter Tessellation(JT) ist ein leichtes 3D-Visualisierungsdateiformat für PLM. \n " +
                     "Es können geöffnet werden in JT2Go Desktop App." +
                     " \n\nSearchArchiv Fehler-Hinweis: (F9) \n\nError Message:" +
-                    " \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                    " \n" + ex.Message, "INFORMATION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -208,33 +208,37 @@ namespace SearchArchiv.Views
         {
             try
             {
-                var SenderBtn = sender as System.Windows.Controls.Button;
-                var SenderBtn_DXF_Content = ((SearchArchiv.Classes.SearchingClass.IDsDates)((System.Windows.FrameworkElement)SenderBtn.Content).DataContext).PathToDXF;
-                if (SenderBtn_DXF_Content == null)
+                var senderBtn = sender as Button;
+                var senderBtnDxfContent =
+                    ((OutcomeInfosData)((FrameworkElement)senderBtn.Content).DataContext).PathToDXF;
+                if (senderBtnDxfContent == null)
                     return;
-                string SaveName = SenderBtn_DXF_Content.Remove(0, SenderBtn_DXF_Content.LastIndexOf("\\") + 1);
+                var saveName = senderBtnDxfContent.Remove(0, senderBtnDxfContent.LastIndexOf("\\") + 1);
 
-                string SavePath_PDF_Name = string.Empty;
+                var savePathPdfName = string.Empty;
 
-                System.Windows.Forms.SaveFileDialog saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+                var saveFileDialog1 = new SaveFileDialog();
                 saveFileDialog1.Title = "Save DXF";
                 saveFileDialog1.DefaultExt = "dxf";
-                saveFileDialog1.FileName = SaveName;
+                saveFileDialog1.FileName = saveName;
                 saveFileDialog1.Filter = "DXF files (*.dxf)|*.dxf|All files (*.*)|*.*";
                 saveFileDialog1.FilterIndex = 1;
                 saveFileDialog1.OverwritePrompt = true;
                 saveFileDialog1.RestoreDirectory = true;
                 if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    string newDirectory = saveFileDialog1.FileName;
-                    System.IO.File.Copy(SenderBtn_DXF_Content, newDirectory, true);
-                };
+                    var newDirectory = saveFileDialog1.FileName;
+                    File.Copy(senderBtnDxfContent, newDirectory, true);
+                }
+
+                ;
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen." +
-                    " \n  -Bitte verwenden Sie eine andere Sammlung. \n\nSearchArchiv Fehler-Hinweis: (F5) " +
-                    "\n\nError Message: \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                MessageBox.Show("Bei der Aufgabe ist was schief gelaufen." +
+                                " \n  -Bitte verwenden Sie eine andere Sammlung. \n\nSearchArchiv Fehler-Hinweis: (F5) " +
+                                "\n\nError Message: \n" + ex.Message, "INFORMATION", MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
             }
         }
 
@@ -242,33 +246,36 @@ namespace SearchArchiv.Views
         {
             try
             {
-                var SenderBtn = sender as System.Windows.Controls.Button;
-                var SenderBtn_PDF_Content = ((SearchArchiv.Classes.SearchingClass.IDsDates)((System.Windows.FrameworkElement)SenderBtn.Content).DataContext).PathToPDF;
-                if (SenderBtn_PDF_Content == null)
+                var senderBtn = sender as Button;
+                var senderBtnPdfContent =
+                    ((OutcomeInfosData)((FrameworkElement)senderBtn.Content).DataContext).PathToPDF;
+                if (senderBtnPdfContent == null)
                     return;
-                string SaveName = SenderBtn_PDF_Content.Remove(0, SenderBtn_PDF_Content.LastIndexOf("\\") + 1);
+                var saveName = senderBtnPdfContent.Remove(0, senderBtnPdfContent.LastIndexOf("\\") + 1);
 
-                string SavePath_PDF_Name = string.Empty;
-
-                System.Windows.Forms.SaveFileDialog saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+                var savePathPdfName = string.Empty;
+                var saveFileDialog1 = new SaveFileDialog();
                 saveFileDialog1.Title = "Save PDF";
                 saveFileDialog1.DefaultExt = "pdf";
-                saveFileDialog1.FileName = SaveName;
+                saveFileDialog1.FileName = saveName;
                 saveFileDialog1.Filter = "PDF files (*.pdf)|*.pdf|All files (*.*)|*.*";
                 saveFileDialog1.FilterIndex = 1;
                 saveFileDialog1.OverwritePrompt = true;
                 saveFileDialog1.RestoreDirectory = true;
                 if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    string newDirectory = saveFileDialog1.FileName;
-                    System.IO.File.Copy(SenderBtn_PDF_Content, newDirectory, true);
-                };
+                    var newDirectory = saveFileDialog1.FileName;
+                    File.Copy(senderBtnPdfContent, newDirectory, true);
+                }
+
+                ;
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n " +
-                    " -Bitte verwenden Sie eine andere Sammlung. \n\nSearchArchiv Fehler-Hinweis: (F6)" +
-                    " \n\nError Message: \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n " +
+                                " -Bitte verwenden Sie eine andere Sammlung. \n\nSearchArchiv Fehler-Hinweis: (F6)" +
+                                " \n\nError Message: \n" + ex.Message, "INFORMATION", MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
             }
         }
 
@@ -276,20 +283,21 @@ namespace SearchArchiv.Views
         {
             try
             {
-                var SenderBtn = sender as System.Windows.Controls.Button;
-                var SenderBtn_DOC_Content = ((SearchArchiv.Classes.SearchingClass.IDsDates)((System.Windows.FrameworkElement)SenderBtn.Content).DataContext).PathToDOC;
-                if (SenderBtn_DOC_Content == null)
+                var senderBtn = sender as Button;
+                var senderBtnDocContent =
+                    ((OutcomeInfosData)((FrameworkElement)senderBtn.Content).DataContext).PathToDOC;
+                if (senderBtnDocContent == null)
                     return;
 
-                System.Diagnostics.Process.Start(SenderBtn_DOC_Content);
-
+                Process.Start(senderBtnDocContent);
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung.\n\n" +
+                MessageBox.Show(
+                    "Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung.\n\n" +
                     "Bitte überprüfen Sie OFFICE und die Dateiendung, der DOC/DOCX-Datei. \n\n" +
                     " \n\nSearchArchiv Fehler-Hinweis: (F7) \n\nError Message:" +
-                    " \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                    " \n" + ex.Message, "INFORMATION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -297,19 +305,20 @@ namespace SearchArchiv.Views
         {
             try
             {
-                var SenderBtn = sender as System.Windows.Controls.Button;
-                var SenderBtn_PathToFolder_Content = ((SearchArchiv.Classes.SearchingClass.IDsDates)((System.Windows.FrameworkElement)SenderBtn.Content).DataContext).PathToFolder;
-                if (SenderBtn_PathToFolder_Content == null)
+                var senderBtn = sender as Button;
+                var senderBtnPathToFolderContent =
+                    ((OutcomeInfosData)((FrameworkElement)senderBtn.Content).DataContext).PathToFolder;
+                if (senderBtnPathToFolderContent == null)
                     return;
 
-                System.Diagnostics.Process.Start(SenderBtn_PathToFolder_Content);
-
+                Process.Start(senderBtnPathToFolderContent);
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung." +
+                MessageBox.Show(
+                    "Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung." +
                     " \n\nSearchArchiv Fehler-Hinweis: (F10) \n\nError Message:" +
-                    " \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                    " \n" + ex.Message, "INFORMATION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -317,37 +326,41 @@ namespace SearchArchiv.Views
         {
             try
             {
-                var SenderBtn = sender as System.Windows.Controls.Button;
-                var SenderBtn_PDF_Content = ((SearchArchiv.Classes.SearchingClass.IDsDates)((System.Windows.FrameworkElement)SenderBtn.Content).DataContext).PathToPDF;
-                if (SenderBtn_PDF_Content == null)
+                var senderBtn = sender as Button;
+                var senderBtnPdfContent =
+                    ((OutcomeInfosData)((FrameworkElement)senderBtn.Content).DataContext).PathToPDF;
+                if (senderBtnPdfContent == null)
                     return;
 
-                SendtoPrint((string)SenderBtn_PDF_Content);
-
+                SendtoPrint(senderBtnPdfContent);
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung." +
+                MessageBox.Show(
+                    "Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung." +
                     " \n\nSearchArchiv Fehler-Hinweis: (F11) \n\nError Message:" +
-                    " \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
-            } 
+                    " \n" + ex.Message, "INFORMATION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
+
         private static bool ProcessIsRunning_AcroRd32()
         {
-            return (System.Diagnostics.Process.GetProcessesByName("AcroRd32").Length == 0);
+            return Process.GetProcessesByName("AcroRd32").Length == 0;
         }
+
         private static bool ProcessIsRunning_Acrobat()
         {
-            return (System.Diagnostics.Process.GetProcessesByName("Acrobat").Length == 0);
+            return Process.GetProcessesByName("Acrobat").Length == 0;
         }
-        private static void SendtoPrint(string Printfile)
+
+        private static void SendtoPrint(string printfile)
         {
             try
             {
                 // Check if PDF Viewer run already. If not, first start then.
                 if (ProcessIsRunning_AcroRd32() & ProcessIsRunning_Acrobat())
                 {
-                    System.Diagnostics.Process myProcess = new System.Diagnostics.Process();
+                    var myProcess = new Process();
                     myProcess.StartInfo.FileName = "acroRd32.exe";
                     myProcess.StartInfo.Arguments = "/h";
 
@@ -358,56 +371,60 @@ namespace SearchArchiv.Views
                         myProcess.Start();
                     }
                     catch
-                    { }
+                    {
+                    }
                     finally
                     {
                         myProcess.StartInfo.FileName = "Acrobat.exe";
-                        // Try start process name Acrobat.exe, if Exception, than main methode catch Exception with Message.
+                        // Try start process name Acrobat.exe, if Exception, than main method catch Exception with Message.
                         myProcess.Start();
                     }
 
-                    int milliseconds = 1000;
-                    System.Threading.Thread.Sleep(milliseconds);
+                    var milliseconds = 1000;
+                    Thread.Sleep(milliseconds);
                 }
-                
 
-                System.Diagnostics.Process p = new System.Diagnostics.Process
+
+                var p = new Process
                 {
-                    StartInfo = new System.Diagnostics.ProcessStartInfo()
+                    StartInfo = new ProcessStartInfo
                     {
                         CreateNoWindow = true,
                         Verb = "print",
-                        FileName = Printfile
+                        FileName = printfile
                     }
                 };
                 p.Start();
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung. \n\n" +
+                MessageBox.Show(
+                    "Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung. \n\n" +
                     "Bitte überprüfen Sie Adobe und die Dateiendung, der PDF-Datei. \n\n" +
                     " \n\nSearchArchiv Fehler-Hinweis: (F12) \n\nError Message:" +
-                    " \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                    " \n" + ex.Message, "INFORMATION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
         private void IconBtn_OpenDXF_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                var SenderBtn = sender as System.Windows.Controls.Button;
-                var SenderBtn_DXF_Content = ((SearchArchiv.Classes.SearchingClass.IDsDates)((System.Windows.FrameworkElement)SenderBtn.Content).DataContext).PathToDXF;
-                if (SenderBtn_DXF_Content == null)
+                var senderBtn = sender as Button;
+                var senderBtnDxfContent =
+                    ((OutcomeInfosData)((FrameworkElement)senderBtn.Content).DataContext).PathToDXF;
+                if (senderBtnDxfContent == null)
                     return;
 
-                System.Diagnostics.Process.Start(SenderBtn_DXF_Content);
-
+                Process.Start(senderBtnDxfContent);
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung.\n\n" +
+                MessageBox.Show(
+                    "Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung.\n\n" +
                     "Bitte überprüfen Sie OPENING PROGRAMM und die Dateiendung, der DXF-Datei. \n\n" +
                     " \n\nSearchArchiv Fehler-Hinweis: (F8) \n\nError Message:" +
-                    " \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                    " \n" + ex.Message, "INFORMATION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -415,50 +432,48 @@ namespace SearchArchiv.Views
         {
             try
             {
-                var SenderBtn = sender as System.Windows.Controls.Button;
-                var SenderBtn_PDF_Content = ((SearchArchiv.Classes.SearchingClass.IDsDates)((System.Windows.FrameworkElement)SenderBtn.Content).DataContext).PathToPDF;
-                if (SenderBtn_PDF_Content == null)
+                var senderBtn = sender as Button;
+                var senderBtnPdfContent =
+                    ((OutcomeInfosData)((FrameworkElement)senderBtn.Content).DataContext).PathToPDF;
+                if (senderBtnPdfContent == null)
                     return;
 
-                System.Diagnostics.Process.Start(SenderBtn_PDF_Content);
-
+                Process.Start(senderBtnPdfContent);
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung.\n\n" +
+                MessageBox.Show(
+                    "Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung.\n\n" +
                     "Bitte überprüfen Sie Adobe und die Dateiendung, der PDF-Datei. \n\n" +
                     " \n\nSearchArchiv Fehler-Hinweis: (F9) \n\nError Message:" +
-                    " \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                    " \n" + ex.Message, "INFORMATION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
-        private void ID_Input_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void ID_Input_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
-                StartSearching();
-                return;
-            }
+            if (e.Key == Key.Enter) StartSearching();
         }
 
         private void IconBtn_Loupe_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             try
             {
-                var SenderBtn = sender as System.Windows.Controls.Button;
-                var SenderBtn_TIF_Content = ((SearchArchiv.Classes.SearchingClass.IDsDates)((System.Windows.FrameworkElement)SenderBtn.Content).DataContext).PathToTIF;
-                if (SenderBtn_TIF_Content == null)
+                var senderBtn = sender as Button;
+                var senderBtnTifContent =
+                    ((OutcomeInfosData)((FrameworkElement)senderBtn.Content).DataContext).PathToTIF;
+                if (senderBtnTifContent == null)
                     return;
 
-                System.Diagnostics.Process.Start(SenderBtn_TIF_Content);
-
+                Process.Start(senderBtnTifContent);
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung.\n\n" +
+                MessageBox.Show(
+                    "Bei der Aufgabe ist was schief gelaufen. \n  -Bitte verwenden Sie eine andere Sammlung.\n\n" +
                     "Bitte überprüfen Sie Foto-Software und die Dateiendung, der TIF-Datei. \n\n" +
                     " \n\nSearchArchiv Fehler-Hinweis: (F7) \n\nError Message:" +
-                    " \n" + ex.Message, "INFORMATION", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                    " \n" + ex.Message, "INFORMATION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

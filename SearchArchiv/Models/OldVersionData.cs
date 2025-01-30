@@ -9,14 +9,12 @@
 //  * For inquiries, contact: damiannass@nas4.tech
 //  ******************************************************/
 
-using System.Windows;
-
-namespace SearchArchive
+namespace SearchArchive.Models
 {
-    /// <summary>
-    ///     Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    public struct OldVersionData
     {
+        public string NameIDsOld { get; set; }
+        public string NameSettPathOld { get; set; }
+        public string PathToFolderOld { get; set; }
     }
 }

@@ -1,22 +1,24 @@
-﻿using SearchArchiv.Classes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿// /******************************************************
+//  * MIT License
+//  * Copyright © 2025 Damian Nass
+// 
+//  * Permission is hereby granted, free of charge, to any person obtaining a copy
+//  * of this software to use, copy, modify, merge, publish, and distribute it.
+// 
+//  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+//  * For inquiries, contact: damiannass@nas4.tech
+//  ******************************************************/
 
-namespace SearchArchiv.Views
+using System;
+using System.Diagnostics;
+using System.Windows;
+using System.Windows.Input;
+using SearchArchive.Models;
+
+namespace SearchArchive.Views
 {
     /// <summary>
-    /// Interaction logic for Info_Window.xaml
+    ///     Interaction logic for Info_Window.xaml
     /// </summary>
     public partial class Info_Window : Window
     {
@@ -25,15 +27,18 @@ namespace SearchArchiv.Views
             InitializeComponent();
             LoadImages();
         }
+
         private void LoadImages()
         {
-            // Methode to Get base64 image string, and set on Image Source. 
-            Adwers_Logo.Source = ImagesClass.MemoringStreamBitmap(Convert.FromBase64String(ImagesClass.AdwersLogoBase64));
+            // Method to Get base64 image string, and set on Image Source. 
+            Adwers_Logo.Source =
+                ImagesBase64.MemorizingStreamBitmap(Convert.FromBase64String(ImagesBase64.AdwersLogoBase64));
         }
+
         private void Info_Go_Adwers_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             // Go to website adwers.com
-            System.Diagnostics.Process.Start("https://www.adwers.com/de/");
+            Process.Start("https://www.adwers.com/de/");
         }
     }
 }
