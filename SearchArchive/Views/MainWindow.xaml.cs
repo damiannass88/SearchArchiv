@@ -45,7 +45,7 @@ namespace SearchArchive.Views
         {
             // Method to Get base64 image string, and set on Image Source.
             Logo_Firm_image.Source =
-                ImagesBase64.MemorizingStreamBitmap(Convert.FromBase64String(ImagesBase64.SaxasImageBase64));
+                ImagesBase64.MemorizingStreamBitmap(Convert.FromBase64String(ImagesBase64.AdwersStructureLogoImageBase64));
             Settings_BtnIcon.Source =
                 ImagesBase64.MemorizingStreamBitmap(Convert.FromBase64String(ImagesBase64.SettingsImageBase64));
         }
@@ -63,7 +63,7 @@ namespace SearchArchive.Views
         // Go to website adwers.com lang=de
         private void Adwers_footer_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Process.Start("https://www.adwers.com/de/");
+            Process.Start("https://www.adwers.com/damiannass/");
         }
 
         // Close Application.

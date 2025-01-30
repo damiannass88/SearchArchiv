@@ -8,7 +8,10 @@
         WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
         WindowStyle="None"
-        Title="SearchArchive" Height="600" Width="420" MouseDown="Window_MouseDown"
+        Title="SearchArchive" 
+        Height="680" 
+        Width="420" 
+        MouseDown="Window_MouseDown"
         Icon="SearchArchive.ico"
         Deactivated="MainWindow_Name_Deactivated"
         Activated="MainWindow_Name_Activated">
@@ -690,7 +693,7 @@
                 <RowDefinition Height="5" Tag="Margin" />
                 <RowDefinition Height="30" Tag="Title" />
                 <RowDefinition Height="50" Tag="Input_Area" />
-                <RowDefinition Height="245" MinHeight="180" Tag="Table1" />
+                <RowDefinition Height="315" MinHeight="180" Tag="Table1" />
                 <RowDefinition Height="1*" MinHeight="15" Tag="Table2" />
                 <RowDefinition Height="40" Tag="Footer" />
                 <RowDefinition Height="5" Tag="Margin" />
@@ -891,13 +894,13 @@
                   Grid.Row="5">
 
                 <Image x:Name="Logo_Firm_image"
-                       Margin="10,3,0,0"
-                       Width="75"
+                       Margin="0,3,0,0"
+                       Width="130"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center" />
 
                 <TextBlock x:Name="Adwers_footer"
-                           Text="Adwers.com"
+                           Text="Adwers.com/DamianNass"
                            Foreground="Black"
                            FontSize="10"
                            HorizontalAlignment="Center"
