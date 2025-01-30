@@ -1,4 +1,4 @@
-# SearchArchiv   ![Icon_256](https://user-images.githubusercontent.com/55595642/141362442-2992d58c-ad17-4d40-ad4b-dbebc95f1654.png)
+# SearchArchive   ![Icon_256](https://user-images.githubusercontent.com/55595642/141362442-2992d58c-ad17-4d40-ad4b-dbebc95f1654.png)
 
 POLSKI: <br/> 
 SearchArchive Aplikacja dla przemysłowej Firmy w Niemczech. Zadanie aplikacji to przeszukanie struktury plików (główny zbiór ok. 260.000 plików) ze komponetami części produkcyjnych, przez podanie unikatowego ID i wyświetlenie aktualnej wersji PDF oraz drukowanie przez jedno kliknięcie. Dodatkowe funkcje: szybki podgląd,
